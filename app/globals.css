@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #F5F1E8;
+  --ink: #17302D;
+  --ink-soft: #4B5F5A;
+  --teal: #0F3D48;
+  --copper: #B8763E;
+  --success: #4C7A5E;
+  --danger: #B5533C;
+  --line: #DAD2BE;
+  --card: #FFFDF8;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: 'Tajawal', sans-serif;
+}
+
+h1, h2, h3, .font-head {
+  font-family: 'Cairo', sans-serif;
+}
