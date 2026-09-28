@@ -14,6 +14,7 @@ export default function CatalogClient({ initialCatalog, suppliers, userId }) {
   const [search, setSearch] = useState('');
   const [form, setForm] = useState(null);
   const [priceEdit, setPriceEdit] = useState(null); // { product, price, supplier_id, effective_date }
+  const [bulk, setBulk] = useState(null); // { pct, effective_date }
   const [error, setError] = useState('');
 
   const cats = CATEGORIES.filter(c => c.group === group);
@@ -48,6 +49,26 @@ export default function CatalogClient({ initialCatalog, suppliers, userId }) {
       { ...data, coverage: Number(data.coverage), price, price_date: today(), price_stale: false },
     ]);
     setForm(null);
+  }
+
+  // تعديل كل أسعار المجموعة بنسبة (مثلاً +10% بعد زيادة أسعار السوق) — كل سعر بيتسجّل كسعر جديد والقديم بيفضل في السجل
+  const groupProducts = catalog.filter(p => CATEGORY_BY_CODE[p.category_code]?.group === group && p.price != null);
+  async function saveBulk(e) {
+    e.preventDefault();
+    setError('');
+    const pct = Number(bulk.pct);
+    if (!Number.isFinite(pct) || pct === 0 || pct <= -90 || pct > 300) { setError('النسبة لازم تكون بين -90% و +300% ومش صفر'); return; }
+    const rows = groupProducts.map(p => ({
+      owner_id: userId, product_id: p.id, approved: true, effective_date: bulk.effective_date, source: `bulk:${pct}%`,
+      price: Math.round(p.price * (1 + pct / 100) * 100) / 100,
+    }));
+    const { error: e1 } = await supabase.from('product_prices').insert(rows);
+    if (e1) { setError(e1.message); return; }
+    if (bulk.effective_date <= today()) {
+      const byId = new Map(rows.map(r => [r.product_id, r.price]));
+      setCatalog(prev => prev.map(p => (byId.has(p.id) ? { ...p, price: byId.get(p.id), price_date: bulk.effective_date, price_stale: false } : p)));
+    }
+    setBulk(null);
   }
 
   async function savePrice(e) {
@@ -85,6 +106,13 @@ export default function CatalogClient({ initialCatalog, suppliers, userId }) {
       </div>
       <input value={search} onChange={e => setSearch(e.target.value)} placeholder="بحث بالشركة أو الموديل..."
         className="border rounded-xl px-4 py-2.5 text-sm w-full mb-4 outline-none" style={{ borderColor: 'var(--line)', backgroundColor: '#fff' }} />
+      <div className="flex items-center gap-3 mb-4">
+        <span className="text-xs" style={{ color: 'var(--ink-soft)' }}>{groupProducts.length} منتج بسعر في «{CATEGORY_GROUPS[group]}»</span>
+        <button type="button" disabled={!groupProducts.length} onClick={() => setBulk({ pct: 10, effective_date: today() })}
+          className="mr-auto text-xs font-bold px-3 py-2 rounded-xl border" style={{ borderColor: 'var(--copper)', color: 'var(--copper)' }}>
+          تعديل أسعار المجموعة بنسبة %
+        </button>
+      </div>
       {error && <p className="text-xs mb-3" style={{ color: 'var(--danger)' }}>{error}</p>}
 
       <div className="flex flex-col gap-4">
@@ -105,7 +133,7 @@ export default function CatalogClient({ initialCatalog, suppliers, userId }) {
                   {p.coverage !== 1 && <span className="text-[11px]" style={{ color: 'var(--ink-soft)' }}>(تغطية {p.coverage} {c.measure_unit}/{p.unit})</span>}
                   {p.specs?.source && <Badge tone="finish">نشرة · ص {p.specs.page}</Badge>}
                   {p.is_default && <Badge tone="ok">افتراضي</Badge>}
-                  {p.is_sample && <Badge tone="warn">تجريبي</Badge>}
+                  {p.is_sample && <Badge tone="warn">تقديري</Badge>}
                   {p.price_stale && <Badge tone="danger">سعر قديم</Badge>}
                   <span className="mr-auto font-head font-extrabold">{p.price == null ? '—' : money(p.price)} <span className="text-[11px] font-medium opacity-60">ج.م/{p.unit}</span></span>
                   <span className="text-[11px] w-20 text-left" style={{ color: 'var(--ink-soft)' }}>{p.price_date || ''}</span>
@@ -133,6 +161,25 @@ export default function CatalogClient({ initialCatalog, suppliers, userId }) {
             <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={form.sold_by_pack} onChange={e => setForm({ ...form, sold_by_pack: e.target.checked })} /> بيتباع بعبوات كاملة</label>
             <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={form.is_default} onChange={e => setForm({ ...form, is_default: e.target.checked })} /> المنتج الافتراضي للتصنيف</label>
             <button className="col-span-2 font-head font-bold text-white py-3 rounded-xl" style={{ backgroundColor: 'var(--teal)' }}>حفظ</button>
+          </form>
+        </Modal>
+      )}
+
+      {bulk && (
+        <Modal title={`تعديل أسعار «${CATEGORY_GROUPS[group]}» بنسبة`} onClose={() => setBulk(null)}>
+          <form onSubmit={saveBulk} className="flex flex-col gap-3">
+            <Field label="النسبة % (موجب = زيادة، سالب = تخفيض)">
+              <NumInput value={bulk.pct} min={-90} onChange={pct => setBulk({ ...bulk, pct })} />
+            </Field>
+            <Field label="ساري من">
+              <input type="date" value={bulk.effective_date} onChange={e => setBulk({ ...bulk, effective_date: e.target.value })}
+                className="border rounded-lg px-2.5 py-2 text-sm" style={{ borderColor: 'var(--line)' }} />
+            </Field>
+            <p className="text-xs" style={{ color: 'var(--ink-soft)' }}>
+              هيتسجّل سعر جديد لـ {groupProducts.length} منتج. الأسعار القديمة بتفضل في السجل، والمقايسات المعتمدة مش بتتأثر.
+              {groupProducts[0] && Number.isFinite(Number(bulk.pct)) && ` مثال: ${groupProducts[0].name} ${money(groupProducts[0].price)} ← ${money(groupProducts[0].price * (1 + Number(bulk.pct) / 100))} ج.م`}
+            </p>
+            <button className="font-head font-bold text-white py-3 rounded-xl" style={{ backgroundColor: 'var(--teal)' }}>تطبيق</button>
           </form>
         </Modal>
       )}

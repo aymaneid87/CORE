@@ -129,7 +129,7 @@ export default function BoqView({ project, title, unitType, result, settings, on
                     <td className={td}>{l.spaceName}</td>
                     <td className={td}><b>{l.categoryTitle}</b><div style={{ color: 'var(--ink-soft)' }}>{l.groupTitle}: {l.optionTitle}</div></td>
                     <td className={td}>{l.product ? productLabel(l.product) : <span style={{ color: 'var(--danger)' }}>غير محدد</span>}
-                      {l.product?.is_sample && <> <Badge tone="warn">تجريبي</Badge></>}</td>
+                      {l.product?.is_sample && <> <Badge tone="warn">تقديري</Badge></>}</td>
                     <td className={td + ' font-head'}>{qty(l.measureQty)} {l.measureUnit}{l.coats > 1 ? ` × ${l.coats} وش` : ''}</td>
                     <td className={td + ' font-head'}>{l.wastePct ? `${l.wastePct}%` : '—'}</td>
                     <td className={td + ' font-head'}>{qty(l.neededQty)} {l.measureUnit}</td>

@@ -110,7 +110,7 @@ test('التقريب للكراتين بيتم على إجمالي المشرو�
   assert.equal(ceilUnits(2.01), 3);
 });
 
-test('منتج ناقص أو سعر تجريبي بيتعلّم عليه — المقايسة ما تبقاش "كاملة" بسعر صفر', () => {
+test('منتج ناقص أو سعر تقديري بيتعلّم عليه — المقايسة ما تبقاش "كاملة" بسعر صفر', () => {
   const r = computeEstimate({
     spaces: [bedroom],
     selections: { b1: { floor_finish: { groups: { floor_type: 'marble', skirting: 'marble' } } } },
@@ -120,7 +120,9 @@ test('منتج ناقص أو سعر تجريبي بيتعلّم عليه — ا�
 
   const r2 = computeEstimate({ spaces: [bedroom], selections: { b1: defaultSpaceSelections('bedroom') } }, SAMPLE_PRODUCTS);
   assert.ok(r2.complete);
-  assert.ok(r2.issues.some(i => i.level === 'warning' && i.message.includes('تجريبي')));
+  const est = r2.issues.filter(i => i.level === 'warning' && i.message.includes('تقديرية'));
+  assert.equal(est.length, 1, 'تنبيه واحد مجمّع مش تنبيه لكل منتج');
+  assert.equal(r2.totals.estimatedShare, 100);
 });
 
 test('منتج مختار اتحذف من الكتالوج → خطأ صريح مش رجوع صامت للافتراضي', () => {

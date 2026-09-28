@@ -14,7 +14,7 @@ const bulletinUuid = id => `00000000-0000-4000-9${id.replace(/\D/g, '').slice(0,
 const out = [];
 out.push('-- ==========================================================');
 out.push('-- ملف مولّد تلقائياً من lib/estimation — متعدّلوش بإيدك، عدّل الكود وشغّل npm run seed:generate');
-out.push('-- المنتجات هنا تجريبية (is_sample = true) وأسعارها تقديرية للتجربة فقط');
+out.push('-- أسعار تقديرية من السوق المصري (سبتمبر 2026) — is_sample = true معناها "تقديري"، وكلها قابلة للتعديل من الكتالوج');
 out.push('-- ==========================================================');
 out.push('begin;');
 out.push('');
@@ -26,18 +26,17 @@ out.push('');
 out.push('insert into products (id, owner_id, category_code, brand, model, name, unit, coverage, sold_by_pack, is_default, is_sample, active) values');
 out.push(SAMPLE_PRODUCTS.map(p => `  (${[sampleUuid(p.id)].map(q).join()}, null, ${[p.category_code, p.brand, p.model, p.name, p.unit, p.coverage, p.sold_by_pack, p.is_default, true, true].map(q).join(', ')})`).join(',\n'));
 out.push('on conflict (id) do update set category_code = excluded.category_code, brand = excluded.brand, model = excluded.model, name = excluded.name,');
-// is_default مش بيتحدّث عند إعادة التشغيل — النشرة/الشركة ممكن تكون ألغت الافتراضي التجريبي
-out.push('  unit = excluded.unit, coverage = excluded.coverage, sold_by_pack = excluded.sold_by_pack;');
+out.push('  unit = excluded.unit, coverage = excluded.coverage, sold_by_pack = excluded.sold_by_pack, is_default = excluded.is_default;');
 out.push('');
-out.push('-- الأسعار التجريبية (بتاريخ ثابت عشان أي سعر حقيقي يتضاف بعد كده ياخد الأولوية)');
+out.push('-- الأسعار التقديرية (أي سعر تدخله الشركة بعد كده بياخد الأولوية)');
 out.push("delete from product_prices where owner_id is null and product_id in (select id from products where is_sample and owner_id is null);");
 out.push('insert into product_prices (owner_id, product_id, price, effective_date, approved) values');
-out.push(SAMPLE_PRODUCTS.map(p => `  (null, ${q(sampleUuid(p.id))}, ${p.price}, '2026-01-01', true)`).join(',\n') + ';');
+out.push(SAMPLE_PRODUCTS.map(p => `  (null, ${q(sampleUuid(p.id))}, ${p.price}, '2026-09-01', true)`).join(',\n') + ';');
 out.push('');
 out.push('commit;');
 
 writeFileSync(new URL('../supabase/003_seed_catalog.sql', import.meta.url), out.join('\n') + '\n');
-console.log(`✓ ${CATEGORIES.length} تصنيف، ${SAMPLE_PRODUCTS.length} منتج تجريبي → supabase/003_seed_catalog.sql`);
+console.log(`✓ ${CATEGORIES.length} تصنيف، ${SAMPLE_PRODUCTS.length} منتج بسعر تقديري → supabase/003_seed_catalog.sql`);
 
 // ---------- نشرة الأسعار ----------
 const bp = bulletinProducts();
@@ -50,9 +49,6 @@ b.push(`-- ${BULLETIN.source_note}`);
 b.push('-- الأسعار غير شاملة ضريبة القيمة المضافة');
 b.push('-- ==========================================================');
 b.push('begin;');
-const defCats = [...new Set(bp.filter(p => p.is_default).map(p => p.category_code))];
-b.push('-- المنتج التجريبي ما يفضلش افتراضي في التصنيفات اللي ليها سعر من النشرة');
-b.push(`update products set is_default = false where owner_id is null and is_sample and category_code in (${defCats.map(q).join(', ')});`);
 b.push('insert into products (id, owner_id, category_code, brand, model, name, unit, coverage, sold_by_pack, is_default, is_sample, active, specs) values');
 b.push(bp.map(p => `  (${[bulletinUuid(p.id)].map(q).join()}, null, ${[p.category_code, p.brand, p.model, p.name, p.unit, p.coverage, p.sold_by_pack, p.is_default, false, true, JSON.stringify(p.specs)].map(q).join(', ')})`).join(',\n'));
 b.push('on conflict (id) do update set category_code = excluded.category_code, brand = excluded.brand, model = excluded.model, name = excluded.name,');

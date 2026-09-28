@@ -117,7 +117,7 @@ export default function SelectionsEditor({ spaces, selections, catalog, lines, a
                         </option>
                         {options.map(p => (
                           <option key={p.id} value={p.id}>
-                            {productLabel(p)} — {p.price == null ? 'بدون سعر' : `${money(p.price)} ج.م/${p.unit}`}{p.is_sample ? ' (تجريبي)' : ''}
+                            {productLabel(p)} — {p.price == null ? 'بدون سعر' : `${money(p.price)} ج.م/${p.unit}`}{p.is_sample ? ' (تقديري)' : ''}
                           </option>
                         ))}
                       </select>

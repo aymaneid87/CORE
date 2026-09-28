@@ -20,14 +20,21 @@ test('بيانات النشرة: كل سطر له صفحة وسعر موجب و�
   assert.equal(new Set(bulletinProducts().map(p => p.id)).size, bulletinProducts().length);
 });
 
-test('المنتج الافتراضي حسب المنطقة: النشرة أولى من التجريبي، ومصنعية الرخام الشاملة للوزرة مش افتراضية', () => {
+test('الأسعار التقديرية هي الافتراضية، ومنتجات النشرة بدائل متاحة للاختيار', () => {
   const cat = indexCatalog([...SAMPLE_PRODUCTS, ...bulletinProducts()]);
-  assert.equal(defaultProductFor(cat, 'labor_floor_tiling', 'cairo').price, 130);
-  assert.equal(defaultProductFor(cat, 'labor_floor_tiling', 'upper').price, 150);
-  assert.equal(defaultProductFor(cat, 'labor_porcelain_tiling', 'cairo').price, 150);
-  assert.equal(defaultProductFor(cat, 'tile_ceramic_floor', 'upper').price, 150, 'بدون منطقة → ينفع للكل');
-  assert.equal(defaultProductFor(cat, 'hdf_floor', 'cairo').price, 550);
-  assert.ok(defaultProductFor(cat, 'labor_marble', 'cairo').is_sample, 'الشاملة للوزرة مش افتراضية');
+  assert.equal(defaultProductFor(cat, 'labor_floor_tiling', 'cairo').price, 140);
+  assert.equal(defaultProductFor(cat, 'labor_floor_tiling', 'upper').price, 140);
+  assert.ok(defaultProductFor(cat, 'tile_porcelain_floor', 'cairo').is_sample);
+  assert.ok(bulletinProducts().every(p => !p.is_default));
+  const alts = cat.byCategory.get('labor_floor_tiling').filter(p => !p.is_sample).map(p => p.price).sort();
+  assert.deepEqual(alts, [130, 150], 'سعر القاهرة والصعيد من النشرة موجودين كبدائل');
+});
+
+// سعر شركة خاص (بعد التعديل من الكتالوج) بيغلب التقديري
+test('سعر الشركة الخاص بيغلب السعر التقديري', () => {
+  const own = { id: 'own', owner_id: 'u1', category_code: 'labor_floor_tiling', brand: 'مقاولي', name: 'مصنعية', unit: 'م²', coverage: 1, price: 125, is_default: true };
+  const cat = indexCatalog([...SAMPLE_PRODUCTS, own]);
+  assert.equal(defaultProductFor(cat, 'labor_floor_tiling', 'cairo').price, 125);
 });
 
 test('مقارنة الدهان بسعر النشرة: تكلفة المتر = مجموع سطور المنظومة ÷ مسطح الحوائط', () => {
