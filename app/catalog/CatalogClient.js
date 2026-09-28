@@ -69,7 +69,12 @@ export default function CatalogClient({ initialCatalog, suppliers, userId }) {
     <div className="max-w-5xl mx-auto px-4 sm:px-5 pb-16">
       <div className="pt-6 pb-4">
         <a href="/dashboard" className="text-xs" style={{ color: 'var(--ink-soft)' }}>← المشاريع</a>
-        <h1 className="font-head font-bold text-lg mt-2">كتالوج الخامات والأسعار</h1>
+        <div className="flex items-center gap-3 mt-2">
+          <h1 className="font-head font-bold text-lg">كتالوج الخامات والأسعار</h1>
+          <a href="/catalog/bulletins" className="mr-auto text-xs font-bold px-3 py-2 rounded-xl border" style={{ borderColor: 'var(--teal)', color: 'var(--teal)' }}>
+            استيراد نشرة أسعار (PDF)
+          </a>
+        </div>
         <p className="text-xs mt-1" style={{ color: 'var(--ink-soft)' }}>
           كل تعديل سعر بيتسجّل كسعر جديد بتاريخه — السعر القديم بيفضل في السجل، والمقايسات المعتمدة مش بتتأثر.
         </p>
