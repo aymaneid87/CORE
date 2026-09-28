@@ -53,6 +53,12 @@ export default function ProjectClient({ project }) {
         ))}
       </div>
 
+      <a href={`/project/${project.id}/estimate`}
+        className="block w-full text-center font-head font-bold py-3.5 rounded-xl mb-3 border-2"
+        style={{ borderColor: 'var(--teal)', color: 'var(--teal)' }}>
+        المقايسة وحصر الكميات
+      </a>
+
       <button onClick={() => setShowModal(true)}
         className="w-full font-head font-bold text-white py-3.5 rounded-xl mb-6"
         style={{ backgroundColor: 'var(--teal)' }}>

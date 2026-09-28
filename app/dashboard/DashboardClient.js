@@ -45,6 +45,7 @@ export default function DashboardClient({ initialProjects, userEmail }) {
     <div className="max-w-lg mx-auto px-5 pb-10">
       <div className="flex items-center justify-between pt-6 pb-6">
         <h1 className="font-head font-extrabold text-lg">ميزان</h1>
+        <a href="/catalog" className="text-xs font-bold mr-auto ml-4" style={{ color: 'var(--teal)' }}>الخامات والأسعار</a>
         <button onClick={signOut} className="text-xs" style={{ color: 'var(--ink-soft)' }}>
           {userEmail} · خروج
         </button>
