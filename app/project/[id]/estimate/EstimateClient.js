@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { createClient } from '../../../../lib/supabase/client';
 import { computeEstimate, defaultSpaceSelections } from '../../../../lib/estimation/engine';
 import { SPACE_TYPES, UNIT_TYPES } from '../../../../lib/estimation/templates';
+import { REGIONS } from '../../../../lib/estimation/bulletins/2026-06';
 import SpacesEditor from './SpacesEditor';
 import SelectionsEditor from './SelectionsEditor';
 import BoqView from './BoqView';
@@ -14,14 +15,14 @@ const newId = () => (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto
 // نسخة مختصرة من السطر للحفظ في النسخة المعتمدة (السعر والمنتج بيتجمّدوا)
 const snapshotProduct = p => p && { id: p.id, brand: p.brand, model: p.model, name: p.name, unit: p.unit, price: p.price, price_date: p.price_date, is_sample: !!p.is_sample };
 
-export default function EstimateClient({ project, initialEstimate, catalog, initialVersions }) {
+export default function EstimateClient({ project, initialEstimate, catalog, benchmarks = [], initialVersions }) {
   const supabase = useMemo(() => createClient(), []);
   const [tab, setTab] = useState(initialEstimate.spaces?.length ? 'boq' : 'spaces');
   const [title, setTitle] = useState(initialEstimate.title);
   const [unitType, setUnitType] = useState(initialEstimate.unit_type);
   const [spaces, setSpaces] = useState(initialEstimate.spaces || []);
   const [selections, setSelections] = useState(initialEstimate.selections || {});
-  const [settings, setSettings] = useState({ overheadPct: 0, profitPct: 15, vatPct: 0, defaultHeight: 3, ...(initialEstimate.settings || {}) });
+  const [settings, setSettings] = useState({ overheadPct: 0, profitPct: 15, vatPct: 0, defaultHeight: 3, region: 'cairo', ...(initialEstimate.settings || {}) });
   const [activeSpaceId, setActiveSpaceId] = useState(null);
   const [versions, setVersions] = useState(initialVersions);
   const [saveState, setSaveState] = useState('saved'); // saved | dirty | saving | error
@@ -30,11 +31,11 @@ export default function EstimateClient({ project, initialEstimate, catalog, init
 
   const result = useMemo(() => {
     try {
-      return computeEstimate({ spaces, selections, settings }, catalog);
+      return computeEstimate({ spaces, selections, settings }, catalog, { benchmarks });
     } catch (e) {
-      return { spaces: [], lines: [], purchase: [], totals: {}, issues: [{ level: 'error', message: e.message }], complete: false };
+      return { spaces: [], lines: [], purchase: [], totals: {}, benchmarks: [], issues: [{ level: 'error', message: e.message }], complete: false };
     }
-  }, [spaces, selections, settings, catalog]);
+  }, [spaces, selections, settings, catalog, benchmarks]);
 
   // حفظ تلقائي بعد ثانية ونص من آخر تعديل
   useEffect(() => {
@@ -133,6 +134,11 @@ export default function EstimateClient({ project, initialEstimate, catalog, init
           <div className="w-36">
             <Select value={unitType} onChange={setUnitType}>
               {Object.entries(UNIT_TYPES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+            </Select>
+          </div>
+          <div className="w-52">
+            <Select value={settings.region} onChange={region => setSettings({ ...settings, region })}>
+              {Object.entries(REGIONS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
             </Select>
           </div>
           <span className="text-xs" style={{ color: saveState === 'error' ? 'var(--danger)' : 'var(--ink-soft)' }} title={saveError}>{saveLabel}</span>

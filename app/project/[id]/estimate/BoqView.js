@@ -87,6 +87,23 @@ export default function BoqView({ project, title, unitType, result, settings, on
         </Card>
       </div>
 
+      {result.benchmarks?.length > 0 && (
+        <Card>
+          <h3 className="font-head font-bold text-sm mb-1">مقارنة بأسعار النشرة</h3>
+          <p className="text-[11px] mb-2" style={{ color: 'var(--ink-soft)' }}>
+            متوسط تكلفة المتر في المقايسة مقابل السعر المرجعي (غير شامل الضريبة). فرق أكتر من ±25% محتاج مراجعة.
+          </p>
+          {result.benchmarks.map(b => (
+            <div key={b.code} className="flex flex-wrap items-center gap-3 py-2 text-sm" style={{ borderTop: '1px solid var(--line)' }}>
+              <span className="font-bold">{b.title}</span>
+              <span className="text-xs" style={{ color: 'var(--ink-soft)' }}>{qty(b.qty)} {b.unit}</span>
+              <span className="mr-auto font-head">مقايستك: <b>{money(b.actual)}</b> · المرجع: <b>{money(b.price)}</b> ج.م/{b.unit}</span>
+              <Badge tone={b.withinTolerance ? 'ok' : 'warn'}>{b.deviationPct > 0 ? '+' : ''}{Math.round(b.deviationPct)}%</Badge>
+            </div>
+          ))}
+        </Card>
+      )}
+
       {['rough', 'finish'].map(phase => {
         const pl = lines.filter(l => l.phase === phase);
         if (!pl.length) return null;

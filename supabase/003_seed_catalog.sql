@@ -45,7 +45,8 @@ insert into product_categories (code, group_code, title, kind, unit, measure_uni
   ('gypsum_board_ceiling', 'ceilings', 'سقف جبس بورد (توريد وتركيب)', 'material', 'م²', 'م²', 0),
   ('gypsum_cornice', 'ceilings', 'كرانيش جبس', 'material', 'م.ط', 'م.ط', 5),
   ('waterproofing', 'insulation', 'عزل مائي (أرضية + رفرف)', 'material', 'م²', 'م²', 5),
-  ('labor_floor_tiling', 'labor', 'مصنعية تركيب أرضيات سيراميك/بورسلين', 'labor', 'م²', 'م²', 0),
+  ('labor_floor_tiling', 'labor', 'مصنعية تركيب أرضيات سيراميك', 'labor', 'م²', 'م²', 0),
+  ('labor_porcelain_tiling', 'labor', 'مصنعية تركيب أرضيات بورسلين', 'labor', 'م²', 'م²', 0),
   ('labor_wall_tiling', 'labor', 'مصنعية تجليد حوائط', 'labor', 'م²', 'م²', 0),
   ('labor_marble', 'labor', 'مصنعية تركيب رخام', 'labor', 'م²', 'م²', 0),
   ('labor_hdf', 'labor', 'مصنعية تركيب باركيه', 'labor', 'م²', 'م²', 0),
@@ -145,9 +146,10 @@ insert into products (id, owner_id, category_code, brand, model, name, unit, cov
   ('00000000-0000-4000-8000-000000000086', null, 'labor_skirting', 'عينة', 'STD', 'تركيب وزرة', 'م.ط', 1, false, true, true, true),
   ('00000000-0000-4000-8000-000000000087', null, 'labor_paint', 'عينة', 'STD', 'مصنعية دهان كاملة', 'م²', 1, false, true, true, true),
   ('00000000-0000-4000-8000-000000000088', null, 'labor_fixture_install', 'عينة', 'STD', 'تركيب قطعة صحية', 'عدد', 1, false, true, true, true),
-  ('00000000-0000-4000-8000-000000000089', null, 'labor_bathtub_masonry', 'عينة', 'STD', 'مباني + تجليد جوانب بانيو', 'عدد', 1, false, true, true, true)
+  ('00000000-0000-4000-8000-000000000089', null, 'labor_bathtub_masonry', 'عينة', 'STD', 'مباني + تجليد جوانب بانيو', 'عدد', 1, false, true, true, true),
+  ('00000000-0000-4000-8000-000000000090', null, 'labor_porcelain_tiling', 'عينة', 'STD', 'تركيب بورسلين (شامل المونة)', 'م²', 1, false, true, true, true)
 on conflict (id) do update set category_code = excluded.category_code, brand = excluded.brand, model = excluded.model, name = excluded.name,
-  unit = excluded.unit, coverage = excluded.coverage, sold_by_pack = excluded.sold_by_pack, is_default = excluded.is_default;
+  unit = excluded.unit, coverage = excluded.coverage, sold_by_pack = excluded.sold_by_pack;
 
 -- الأسعار التجريبية (بتاريخ ثابت عشان أي سعر حقيقي يتضاف بعد كده ياخد الأولوية)
 delete from product_prices where owner_id is null and product_id in (select id from products where is_sample and owner_id is null);
@@ -240,6 +242,7 @@ insert into product_prices (owner_id, product_id, price, effective_date, approve
   (null, '00000000-0000-4000-8000-000000000086', 45, '2026-01-01', true),
   (null, '00000000-0000-4000-8000-000000000087', 85, '2026-01-01', true),
   (null, '00000000-0000-4000-8000-000000000088', 350, '2026-01-01', true),
-  (null, '00000000-0000-4000-8000-000000000089', 2500, '2026-01-01', true);
+  (null, '00000000-0000-4000-8000-000000000089', 2500, '2026-01-01', true),
+  (null, '00000000-0000-4000-8000-000000000090', 200, '2026-01-01', true);
 
 commit;

@@ -45,9 +45,10 @@ create table if not exists products (
   created_at timestamptz default now()
 );
 create index if not exists products_category_idx on products (category_code) where active;
--- منتج افتراضي واحد بس لكل تصنيف لكل شركة
-create unique index if not exists products_one_default_idx
-  on products (coalesce(owner_id, '00000000-0000-0000-0000-000000000000'::uuid), category_code) where is_default and active;
+-- منتج افتراضي واحد بس لكل (شركة، تصنيف، منطقة)
+create unique index if not exists products_one_default_region_idx
+  on products (coalesce(owner_id, '00000000-0000-0000-0000-000000000000'::uuid), category_code, coalesce(specs->>'region', ''))
+  where is_default and active;
 
 -- ---------- قوائم أسعار الموردين ----------
 create table if not exists price_lists (

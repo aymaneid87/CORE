@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { createClient } from '../../../../lib/supabase/server';
-import { loadCatalog } from '../../../../lib/estimation/load-catalog';
+import { loadCatalog, loadBenchmarks } from '../../../../lib/estimation/load-catalog';
 import EstimateClient from './EstimateClient';
 
 export const dynamic = 'force-dynamic';
@@ -28,10 +28,11 @@ export default async function EstimatePage({ params }) {
     estimate = data;
   }
 
-  const [catalog, { data: versions }] = await Promise.all([
+  const [catalog, benchmarks, { data: versions }] = await Promise.all([
     loadCatalog(supabase),
+    loadBenchmarks(supabase),
     supabase.from('estimate_versions').select('id, version, totals, created_at').eq('estimate_id', estimate.id).order('version', { ascending: false }),
   ]);
 
-  return <EstimateClient project={project} initialEstimate={estimate} catalog={catalog} initialVersions={versions || []} />;
+  return <EstimateClient project={project} initialEstimate={estimate} catalog={catalog} benchmarks={benchmarks} initialVersions={versions || []} />;
 }

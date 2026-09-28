@@ -98,6 +98,7 @@ export default function CatalogClient({ initialCatalog, suppliers, userId }) {
                   <span style={{ color: 'var(--ink-soft)' }}>{p.model}</span>
                   <span>{p.name}</span>
                   {p.coverage !== 1 && <span className="text-[11px]" style={{ color: 'var(--ink-soft)' }}>(تغطية {p.coverage} {c.measure_unit}/{p.unit})</span>}
+                  {p.specs?.source && <Badge tone="finish">نشرة · ص {p.specs.page}</Badge>}
                   {p.is_default && <Badge tone="ok">افتراضي</Badge>}
                   {p.is_sample && <Badge tone="warn">تجريبي</Badge>}
                   {p.price_stale && <Badge tone="danger">سعر قديم</Badge>}
