@@ -6,8 +6,9 @@ export default async function ProjectPage({ params }) {
   const supabase = createClient();
   const { data: project } = await supabase
     .from('projects')
-    .select('*, transactions(*)')
+    .select('id, name, fees_pct, transactions(id, item, amount, created_at)')
     .eq('id', params.id)
+    .order('created_at', { referencedTable: 'transactions', ascending: true })
     .single();
 
   if (!project) notFound();

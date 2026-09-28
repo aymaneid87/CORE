@@ -14,12 +14,39 @@
   --card: #FFFDF8;
 }
 
+html {
+  background-color: var(--bg);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   background-color: var(--bg);
   color: var(--ink);
-  font-family: 'Tajawal', sans-serif;
+  font-family: var(--font-tajawal), 'Tajawal', sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 h1, h2, h3, .font-head {
-  font-family: 'Cairo', sans-serif;
+  font-family: var(--font-cairo), 'Cairo', sans-serif;
+}
+
+/* بيخلي الموبايل يستجيب للّمس فوراً من غير تأخير الـ double-tap zoom */
+a, button, input, select, textarea, label {
+  touch-action: manipulation;
+}
+
+/* المتصفح مش بيرسم الكروت اللي بره الشاشة لحد ما توصلها بالسكرول */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 140px;
+}
+.cv-auto-sm {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 52px;
+}
+
+/* قفل سكرول الخلفية وقت فتح النافذة المنبثقة */
+body.modal-open {
+  overflow: hidden;
 }

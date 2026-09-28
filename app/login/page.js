@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '../../lib/supabase/client';
 
@@ -10,7 +10,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -26,7 +26,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-5">
+    <div className="min-h-screen min-h-[100dvh] flex items-center justify-center px-5">
       <div className="w-full max-w-sm">
         <h1 className="font-head font-extrabold text-2xl text-center mb-1">ميزان</h1>
         <p className="text-sm text-center mb-8" style={{ color: 'var(--ink-soft)' }}>
