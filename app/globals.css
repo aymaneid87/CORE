@@ -2,24 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+/* هوية Core Innovation (من ci-eg.com): فحمي #23262D، رمادي أردوازي #30373E، ذهبي #DAA14C، نص #535353
+   أسماء المتغيرات قديمة (teal/copper) عشان الشاشات كلها بتستخدمها — القيم هي اللي اتغيرت */
 :root {
-  --bg: #F5F1E8;
-  --ink: #17302D;
-  --ink-soft: #4B5F5A;
-  --teal: #0F3D48;
-  --copper: #B8763E;
+  --bg: #F4F4F4;        /* رمادي فاتح زي أقسام الموقع */
+  --ink: #30373E;       /* عناوين */
+  --ink-soft: #5F646B;  /* نص ثانوي */
+  --teal: #23262D;      /* الأساسي: أزرار وشريط علوي (فحمي) */
+  --copper: #A8762C;    /* ذهبي غامق للنصوص والمبالغ — مقروء على الأبيض */
+  --gold: #DAA14C;      /* ذهبي البراند للمساحات والتمييز */
   --success: #4C7A5E;
   --danger: #B5533C;
-  --line: #DAD2BE;
-  --card: #FFFDF8;
+  --line: #E2E2E2;
+  --card: #FFFFFF;
 }
 
 body {
   background-color: var(--bg);
   color: var(--ink);
-  font-family: 'Tajawal', sans-serif;
+  font-family: 'Tajawal', 'Poppins', sans-serif;
 }
 
 h1, h2, h3, .font-head {
-  font-family: 'Cairo', sans-serif;
+  font-family: 'Cairo', 'Poppins', sans-serif;
+}
+
+.font-brand {
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
 }

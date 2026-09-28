@@ -9,7 +9,7 @@ import { mergeCatalog } from '../lib/estimation/catalog.js';
 import { defaultSpaceSelections } from '../lib/estimation/engine.js';
 
 const KEY = 'mizan-demo-v1';
-export const DEMO_USER = { id: 'demo-user', email: 'تجربة@ميزان' };
+export const DEMO_USER = { id: 'demo-user', email: 'حساب تجريبي' };
 const ESTIMATE_PRICE_DATE = '2026-09-01';
 const TABLES = ['projects', 'transactions', 'estimates', 'estimate_versions', 'products', 'product_prices', 'suppliers'];
 

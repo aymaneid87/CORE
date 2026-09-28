@@ -51,13 +51,19 @@ execFileSync(path.join(root, 'node_modules', '.bin', 'tailwindcss'), [
 ], { stdio: 'pipe' });
 const css = readFileSync(cssOut, 'utf8');
 
-const html = `<title>ميزان للمقايسات</title>
+// الشعار بيتضمّن جوه الصفحة (data URI) عشان الصفحة المستقلة مش بتحمّل صور من برّه
+const logoPath = path.join(root, 'public', 'brand', 'logo.png');
+let logoData = null;
+try { logoData = `data:image/png;base64,${readFileSync(logoPath).toString('base64')}`; } catch { console.warn('⚠ مفيش شعار في public/brand/logo.png — هيظهر اسم الشركة بدله'); }
+
+const html = `<title>Core Innovation مقايسات</title>
+<script>window.__BRAND_LOGO__ = ${JSON.stringify(logoData)};</script>
 <style>
 :root { color-scheme: light; }
 ${css}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&family=Poppins:wght@500;600;700&display=swap">
 <div id="root" dir="rtl" lang="ar"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/${REACT}/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/${REACT}/umd/react-dom.production.min.js"></script>

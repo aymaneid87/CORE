@@ -68,8 +68,11 @@ export default function App() {
 
   return (
     <>
-      <div className="px-4 py-2 text-xs flex flex-wrap items-center gap-x-3 gap-y-1" style={{ backgroundColor: 'var(--teal)', color: 'var(--card)' }}>
-        <b>{BRAND.name} · نسخة تجريبية</b>
+      <div className="px-4 py-2 text-xs flex flex-wrap items-center gap-x-3 gap-y-1" style={{ backgroundColor: 'var(--teal)', color: 'var(--card)', borderBottom: '2px solid var(--gold)' }}>
+        {logo
+          ? <img src={logo} alt={BRAND.name} style={{ height: 34, width: 'auto' }} />
+          : <b className="font-brand" style={{ color: 'var(--gold)' }}>{BRAND.shortName}</b>}
+        <b>{BRAND.product} · <span style={{ color: 'var(--gold)' }}>نسخة تجريبية</span></b>
         <span style={{ opacity: 0.8 }}>
           {storageAvailable ? 'البيانات بتتحفظ على جهازك بس' : 'الحفظ مقفول في المتصفح ده — البيانات هتتمسح لما تقفل الصفحة'}
         </span>
@@ -86,9 +89,17 @@ export default function App() {
         </span>
       </div>
       {page}
+      <footer className="px-4 py-6 mt-8 text-xs flex flex-wrap items-center justify-center gap-x-4 gap-y-1" style={{ backgroundColor: 'var(--teal)', color: 'var(--card)' }}>
+        <b className="font-brand" style={{ color: 'var(--gold)' }}>{BRAND.name}</b>
+        <span dir="ltr">{BRAND.phones.join(' · ')}</span>
+        <span dir="ltr">{BRAND.email}</span>
+        <span dir="ltr">{BRAND.website}</span>
+      </footer>
     </>
   );
 }
+
+const logo = typeof window !== 'undefined' ? window.__BRAND_LOGO__ : null;
 
 function Missing() {
   return (
