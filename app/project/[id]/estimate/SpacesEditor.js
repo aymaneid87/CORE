@@ -6,7 +6,7 @@ import { NumInput, Card, Field, Select, Badge, qty } from './ui';
 const OPENING_TYPES = { door: 'باب', window: 'شباك', opening: 'فتحة' };
 const SHOWN_MEASURES = ['floor_area', 'perimeter', 'wall_area_net', 'skirting_length'];
 
-export default function SpacesEditor({ spaces, computedSpaces, defaultHeight, onDefaultHeight, onAdd, onUpdate, onRemove, onDuplicate }) {
+export default function SpacesEditor({ spaces, computedSpaces, defaultHeight, onDefaultHeight, onAdd, onUpdate, onRemove, onDuplicate, pendingRemove }) {
   const bySpace = Object.fromEntries(computedSpaces.map(c => [c.space.id, c]));
   const totalArea = computedSpaces.reduce((s, c) => s + (c.measures?.floor_area || 0), 0);
 
@@ -63,7 +63,7 @@ export default function SpacesEditor({ spaces, computedSpaces, defaultHeight, on
               <Field label="الارتفاع (م)" className="w-24"><NumInput value={s.height} onChange={height => set({ height })} /></Field>
               <div className="flex gap-1 pb-1">
                 <button type="button" onClick={() => onDuplicate(s.id)} className="text-xs px-2 py-1.5 rounded-lg" style={{ color: 'var(--teal)' }}>تكرار</button>
-                <button type="button" onClick={() => onRemove(s.id)} className="text-xs px-2 py-1.5 rounded-lg" style={{ color: 'var(--danger)' }}>حذف</button>
+                <button type="button" onClick={() => onRemove(s.id)} className="text-xs px-2 py-1.5 rounded-lg" style={{ color: 'var(--danger)', fontWeight: pendingRemove === s.id ? 800 : 400 }}>{pendingRemove === s.id ? 'اضغط تاني للتأكيد' : 'حذف'}</button>
               </div>
             </div>
 

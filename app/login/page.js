@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { BRAND } from '../../lib/brand';
 import { createClient } from '../../lib/supabase/client';
 
 export default function LoginPage() {
@@ -28,7 +29,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-5">
       <div className="w-full max-w-sm">
-        <h1 className="font-head font-extrabold text-2xl text-center mb-1">ميزان</h1>
+        <h1 className="font-head font-extrabold text-2xl text-center mb-1">{BRAND.name}</h1>
         <p className="text-sm text-center mb-8" style={{ color: 'var(--ink-soft)' }}>
           {mode === 'login' ? 'سجّل دخولك لإدارة مشاريعك' : 'أنشئ حسابك الجديد'}
         </p>

@@ -1,7 +1,8 @@
 import './globals.css';
+import { BRAND } from '../lib/brand';
 
 export const metadata = {
-  title: 'ميزان — إدارة مشاريع التشطيبات',
+  title: `${BRAND.name} — ${BRAND.tagline}`,
   description: 'تتبع كل جنيه داخل وخارج لكل مشاريعك في مكان واحد.',
 };
 

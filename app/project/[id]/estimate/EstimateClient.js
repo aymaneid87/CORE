@@ -15,7 +15,7 @@ const newId = () => (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto
 // نسخة مختصرة من السطر للحفظ في النسخة المعتمدة (السعر والمنتج بيتجمّدوا)
 const snapshotProduct = p => p && { id: p.id, brand: p.brand, model: p.model, name: p.name, unit: p.unit, price: p.price, price_date: p.price_date, is_sample: !!p.is_sample };
 
-export default function EstimateClient({ project, initialEstimate, catalog, benchmarks = [], initialVersions }) {
+export default function EstimateClient({ project, initialEstimate, catalog, benchmarks = [], initialVersions, printable = true }) {
   const supabase = useMemo(() => createClient(), []);
   const [tab, setTab] = useState(initialEstimate.spaces?.length ? 'boq' : 'spaces');
   const [title, setTitle] = useState(initialEstimate.title);
@@ -27,6 +27,8 @@ export default function EstimateClient({ project, initialEstimate, catalog, benc
   const [versions, setVersions] = useState(initialVersions);
   const [saveState, setSaveState] = useState('saved'); // saved | dirty | saving | error
   const [saveError, setSaveError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [pendingRemove, setPendingRemove] = useState(null); // حذف على ضغطتين بدل confirm()
   const firstRender = useRef(true);
 
   const result = useMemo(() => {
@@ -66,7 +68,7 @@ export default function EstimateClient({ project, initialEstimate, catalog, benc
 
   async function approveVersion() {
     if (!result.complete) {
-      alert('مينفعش تعتمد نسخة والمقايسة فيها أخطاء — راجع التنبيهات في تبويب المقايسة.');
+      setNotice('مينفعش تعتمد نسخة والمقايسة فيها أخطاء — راجع التنبيهات في تبويب المقايسة.');
       setTab('boq');
       return;
     }
@@ -80,8 +82,9 @@ export default function EstimateClient({ project, initialEstimate, catalog, benc
       totals: result.totals,
       input: { spaces, selections, settings, unitType, title },
     }).select('id, version, totals, created_at').single();
-    if (error) { alert(error.message); return; }
+    if (error) { setNotice(`فشل الاعتماد: ${error.message}`); return; }
     setVersions([data, ...versions]);
+    setNotice(`تم اعتماد النسخة ${version} ✓ — الأسعار والكميات اتجمّدت فيها`);
   }
 
   // ---------- عمليات الفراغات ----------
@@ -99,8 +102,8 @@ export default function EstimateClient({ project, initialEstimate, catalog, benc
     }
   }
   function removeSpace(id) {
-    const s = spaces.find(x => x.id === id);
-    if (!confirm(`حذف «${s.name}» وكل اختياراته؟`)) return;
+    if (pendingRemove !== id) { setPendingRemove(id); return; }
+    setPendingRemove(null);
     setSpaces(spaces.filter(x => x.id !== id));
     const { [id]: _, ...rest } = selections;
     setSelections(rest);
@@ -149,19 +152,26 @@ export default function EstimateClient({ project, initialEstimate, catalog, benc
         {Object.entries(TABS).map(([k, v]) => <Chip key={k} active={tab === k} onClick={() => setTab(k)}>{v}</Chip>)}
         <div className="mr-auto flex items-center gap-3">
           <span className="font-head font-extrabold text-lg">{money(result.totals.grand)} <span className="text-xs opacity-60">ج.م</span></span>
-          <button type="button" onClick={() => window.print()} className="text-xs font-bold px-3 py-2 rounded-xl border" style={{ borderColor: 'var(--line)' }}>طباعة</button>
+          {printable && <button type="button" onClick={() => window.print()} className="text-xs font-bold px-3 py-2 rounded-xl border" style={{ borderColor: 'var(--line)' }}>طباعة</button>}
           <button type="button" onClick={approveVersion} className="text-xs font-bold px-3 py-2 rounded-xl text-white" style={{ backgroundColor: 'var(--teal)' }}>
             اعتماد نسخة
           </button>
         </div>
       </div>
 
+      {notice && (
+        <div className="mb-4 rounded-xl px-4 py-3 text-sm font-bold flex items-center gap-3 print:hidden" style={{ backgroundColor: 'var(--card)', border: '1px solid var(--line)' }}>
+          <span className="flex-1">{notice}</span>
+          <button type="button" onClick={() => setNotice('')} aria-label="إغلاق">✕</button>
+        </div>
+      )}
+
       {tab === 'spaces' && (
         <SpacesEditor
           spaces={spaces} computedSpaces={result.spaces}
           defaultHeight={settings.defaultHeight}
           onDefaultHeight={h => setSettings({ ...settings, defaultHeight: h })}
-          onAdd={addSpace} onUpdate={updateSpace} onRemove={removeSpace} onDuplicate={duplicateSpace}
+          onAdd={addSpace} onUpdate={updateSpace} onRemove={removeSpace} onDuplicate={duplicateSpace} pendingRemove={pendingRemove}
         />
       )}
       {tab === 'finishes' && (
