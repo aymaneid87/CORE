@@ -1,9 +1,11 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { createClient } from '../../../lib/supabase/client';
 
 const CATS = ['سيراميك', 'دهانات', 'سباكة', 'كهرباء', 'عمالة', 'نجارة'];
-function num(n) { return Math.round(n).toLocaleString('ar-EG'); }
+const fmt = new Intl.NumberFormat('ar-EG', { maximumFractionDigits: 0 });
+function num(n) { return fmt.format(Math.round(n)); }
 
 export default function ProjectClient({ project }) {
   const [tx, setTx] = useState(project.transactions || []);
@@ -11,12 +13,23 @@ export default function ProjectClient({ project }) {
   const [amount, setAmount] = useState('');
   const [cat, setCat] = useState(CATS[0]);
   const [vendor, setVendor] = useState('');
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
-  const received = tx.filter(t => t.amount > 0).reduce((s, t) => s + Number(t.amount), 0);
-  const spent = tx.filter(t => t.amount < 0).reduce((s, t) => s + Math.abs(t.amount), 0);
-  const fees = Math.round(received * (project.fees_pct / 100));
-  const balance = received - spent - fees;
+  // الحسابات وترتيب القائمة بيتعملوا بس لما المعاملات تتغير، مش مع كل حرف بيتكتب في الفورم
+  const { received, spent, fees, balance } = useMemo(() => {
+    const received = tx.filter(t => t.amount > 0).reduce((s, t) => s + Number(t.amount), 0);
+    const spent = tx.filter(t => t.amount < 0).reduce((s, t) => s + Math.abs(t.amount), 0);
+    const fees = Math.round(received * (project.fees_pct / 100));
+    return { received, spent, fees, balance: received - spent - fees };
+  }, [tx, project.fees_pct]);
+  const txDesc = useMemo(() => tx.slice().reverse(), [tx]);
+
+  // قفل سكرول الصفحة اللي ورا النافذة المنبثقة (مشكلة مشهورة على الموبايل)
+  useEffect(() => {
+    if (!showModal) return;
+    document.body.classList.add('modal-open');
+    return () => document.body.classList.remove('modal-open');
+  }, [showModal]);
 
   async function saveExpense(e) {
     e.preventDefault();
@@ -24,10 +37,10 @@ export default function ProjectClient({ project }) {
     const { data, error } = await supabase
       .from('transactions')
       .insert({ project_id: project.id, item: vendor || cat, amount: -Number(amount), category: cat })
-      .select()
+      .select('id, item, amount, created_at')
       .single();
     if (!error) {
-      setTx([...tx, data]);
+      setTx(prev => [...prev, data]);
       setAmount(''); setVendor(''); setShowModal(false);
     }
   }
@@ -35,7 +48,7 @@ export default function ProjectClient({ project }) {
   return (
     <div className="max-w-lg mx-auto px-5 pb-10">
       <div className="pt-6 pb-5">
-        <a href="/dashboard" className="text-xs" style={{ color: 'var(--ink-soft)' }}>← رجوع للمشاريع</a>
+        <Link href="/dashboard" className="text-xs" style={{ color: 'var(--ink-soft)' }}>← رجوع للمشاريع</Link>
         <h1 className="font-head font-bold text-lg mt-2">{project.name}</h1>
       </div>
 
@@ -61,8 +74,8 @@ export default function ProjectClient({ project }) {
 
       <h3 className="font-head font-bold text-sm mb-3">المعاملات</h3>
       <div className="flex flex-col gap-2">
-        {tx.slice().reverse().map(t => (
-          <div key={t.id} className="border rounded-xl px-4 py-3 flex items-center justify-between"
+        {txDesc.map(t => (
+          <div key={t.id} className="cv-auto-sm border rounded-xl px-4 py-3 flex items-center justify-between"
             style={{ backgroundColor: 'var(--card)', borderColor: 'var(--line)' }}>
             <span className="text-sm font-bold">{t.item}</span>
             <span className="font-head font-extrabold text-sm" style={{ color: t.amount > 0 ? 'var(--success)' : 'var(--danger)' }}>
@@ -74,12 +87,14 @@ export default function ProjectClient({ project }) {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" style={{ backgroundColor: '#00000055' }}>
-          <div className="w-full sm:w-96 rounded-t-3xl sm:rounded-3xl p-6" style={{ backgroundColor: 'var(--card)' }}>
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center overscroll-contain" style={{ backgroundColor: '#00000055' }}
+          onClick={e => { if (e.target === e.currentTarget) setShowModal(false); }}>
+          <div className="w-full sm:w-96 max-h-[90dvh] overflow-y-auto overscroll-contain rounded-t-3xl sm:rounded-3xl p-6" style={{ backgroundColor: 'var(--card)', paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}>
             <h3 className="font-head font-bold text-lg mb-5">مصروف جديد</h3>
             <form onSubmit={saveExpense}>
               <input
                 value={amount} onChange={e => setAmount(e.target.value.replace(/[^0-9]/g, ''))}
+                inputMode="numeric"
                 placeholder="المبلغ" className="border rounded-xl px-4 py-3 mb-3 w-full text-lg font-head font-bold outline-none"
                 style={{ borderColor: 'var(--line)' }}
               />

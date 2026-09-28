@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from '../../lib/supabase/client';
 
@@ -10,14 +11,17 @@ function sums(p) {
   const fees = Math.round(received * (p.fees_pct / 100));
   return { received, spent, fees, balance: received - spent - fees };
 }
-function num(n) { return Math.round(n).toLocaleString('ar-EG'); }
+const fmt = new Intl.NumberFormat('ar-EG', { maximumFractionDigits: 0 });
+function num(n) { return fmt.format(Math.round(n)); }
 
 export default function DashboardClient({ initialProjects, userEmail }) {
   const [projects, setProjects] = useState(initialProjects);
   const [showNew, setShowNew] = useState(false);
   const [name, setName] = useState('');
   const router = useRouter();
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
+  // الحسابات بتتعمل مرة واحدة بس لما المشاريع تتغير، مش مع كل ضغطة زرار أو حرف بيتكتب
+  const cards = useMemo(() => projects.map(p => ({ p, ...sums(p) })), [projects]);
 
   async function addProject(e) {
     e.preventDefault();
@@ -26,7 +30,7 @@ export default function DashboardClient({ initialProjects, userEmail }) {
     const { data, error } = await supabase
       .from('projects')
       .insert({ name, owner_id: user.id })
-      .select()
+      .select('id, name, fees_pct, created_at')
       .single();
     if (!error) {
       setProjects([{ ...data, transactions: [] }, ...projects]);
@@ -78,11 +82,10 @@ export default function DashboardClient({ initialProjects, userEmail }) {
       )}
 
       <div className="flex flex-col gap-3">
-        {projects.map(p => {
-          const { received, spent, balance } = sums(p);
+        {cards.map(({ p, received, spent, balance }) => {
           return (
-            <a key={p.id} href={`/project/${p.id}`}
-              className="block border rounded-2xl p-5"
+            <Link key={p.id} href={`/project/${p.id}`}
+              className="cv-auto block border rounded-2xl p-5"
               style={{ backgroundColor: 'var(--card)', borderColor: 'var(--line)' }}>
               <h3 className="font-head font-bold text-base mb-3">{p.name}</h3>
               <div className="flex items-baseline justify-between mb-3">
@@ -93,7 +96,7 @@ export default function DashboardClient({ initialProjects, userEmail }) {
                 <span>مستلم: {num(received)}</span>
                 <span>مصروف: {num(spent)}</span>
               </div>
-            </a>
+            </Link>
           );
         })}
       </div>

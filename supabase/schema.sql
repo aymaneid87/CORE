@@ -46,3 +46,10 @@ create policy "المستخدم يضيف معاملات لمشاريعه بس"
   on transactions for insert with check (
     exists (select 1 from projects where projects.id = transactions.project_id and projects.owner_id = auth.uid())
   );
+
+-- ==========================================================
+-- فهارس (Indexes) لتسريع تحميل المشاريع والمعاملات
+-- لو قاعدة البيانات عندك متعملة قبل كده، شغّل الجزء ده بس في SQL Editor
+-- ==========================================================
+create index if not exists projects_owner_created_idx on projects (owner_id, created_at desc);
+create index if not exists transactions_project_created_idx on transactions (project_id, created_at);
