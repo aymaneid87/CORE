@@ -2,7 +2,7 @@
 /**
  * Plugin Name: CI Speed Boost
  * Description: تسريع موقع ci-eg.com على الموبايل — تخفيف خطوط Google، وإلغاء سكربتات غير ضرورية. للإيقاف: عطّل الإضافة. للمقارنة: افتح أي صفحة وأضف ?nospeed=1
- * Version: 1.2.0
+ * Version: 1.3.0
  * Requires at least: 6.4
  */
 
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 define( 'CISB_CACHE_DIR', WP_CONTENT_DIR . '/cache/ci-speed-boost' );
 define( 'CISB_CACHE_TTL', 6 * HOUR_IN_SECONDS );
-define( 'CISB_VERSION', '1.2.0' ); // part of the cache key, so updating this file starts a fresh cache
+define( 'CISB_VERSION', '1.3.0' ); // part of the cache key, so updating this file starts a fresh cache
 
 function cisb_cache_file() {
 	$ua     = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
@@ -206,23 +206,83 @@ add_action( 'wp_enqueue_scripts', function () {
 }, 100 );
 
 /*
- * 4) Slider Revolution loads ~110 KB of JavaScript on every page, even pages
- *    without a slider. Remove its files from pages that have no slider.
+ * 4) Clean up the final HTML:
+ *    - Slider Revolution loads ~110 KB of JavaScript on every page, even pages
+ *      without a slider. Remove its files from pages that have no slider.
+ *    - Elementor sections hidden on desktop, tablet AND mobile are never seen by
+ *      anyone, but their carousels still run on every visit. Remove them.
+ *    - The theme loads the Jarallax parallax library; nothing on the site uses it.
  */
+function cisb_strip_hidden_everywhere( $html ) {
+	$out = '';
+	$pos = 0;
+	if ( ! preg_match_all( '/<div class="([^"]*)"/', $html, $m, PREG_OFFSET_CAPTURE ) ) {
+		return $html;
+	}
+	foreach ( $m[1] as $i => $cls ) {
+		$start = $m[0][ $i ][1];
+		if ( $start < $pos ) {
+			continue;
+		}
+		$c = ' ' . $cls[0] . ' ';
+		if ( false === strpos( $c, ' elementor-hidden-desktop ' ) || false === strpos( $c, ' elementor-hidden-tablet ' ) || false === strpos( $c, ' elementor-hidden-mobile ' ) ) {
+			continue;
+		}
+		// Find the matching closing </div>.
+		if ( ! preg_match_all( '#<(/?)div\b[^>]*>#i', $html, $tags, PREG_OFFSET_CAPTURE | PREG_SET_ORDER, $start ) ) {
+			continue;
+		}
+		$depth = 0;
+		$end   = 0;
+		foreach ( $tags as $t ) {
+			$depth += ( '/' === $t[1][0] ) ? -1 : 1;
+			if ( 0 === $depth ) {
+				$end = $t[0][1] + strlen( $t[0][0] );
+				break;
+			}
+		}
+		if ( ! $end ) {
+			continue;
+		}
+		$out .= substr( $html, $pos, $start - $pos );
+		$pos  = $end;
+	}
+	return $out . substr( $html, $pos );
+}
+
 add_action( 'template_redirect', function () {
 	if ( ! cisb_enabled() ) {
 		return;
 	}
 	ob_start( function ( $html ) {
-		if ( false === stripos( $html, '</html>' ) || false !== stripos( $html, '<sr7-module' ) || false !== stripos( $html, '<rs-module' ) ) {
+		if ( false === stripos( $html, '</html>' ) ) {
 			return $html;
 		}
-		return preg_replace( array(
-			"#<script[^>]*id=['\"](tp-tools-js|sr7-js)['\"][^>]*></script>\s*#i",
-			"#<link[^>]*id=['\"]sr7css-css['\"][^>]*>\s*#i",
-		), '', $html );
+		if ( false === stripos( $html, '<sr7-module' ) && false === stripos( $html, '<rs-module' ) ) {
+			$html = preg_replace( array(
+				"#<script[^>]*id=['\"](tp-tools-js|sr7-js)['\"][^>]*></script>\s*#i",
+				"#<link[^>]*id=['\"]sr7css-css['\"][^>]*>\s*#i",
+			), '', $html );
+		}
+		$html = cisb_strip_hidden_everywhere( $html );
+		if ( false === strpos( $html, 'data-jarallax' ) && false === strpos( $html, 'class="jarallax' ) ) {
+			$html = preg_replace( "#<script[^>]*id=['\"]jarallax-js['\"][^>]*></script>\s*#i", '', $html );
+		}
+		return $html;
 	} );
 }, 1 );
+
+/*
+ * 5) Two looping animations made the phone repaint the page on every frame
+ *    (chat button "pulse" changes border-radius; video buttons' spinning ring).
+ *    Same look, but done in a way the graphics chip handles alone.
+ */
+add_action( 'wp_head', function () {
+	if ( ! cisb_enabled() ) {
+		return;
+	}
+	echo '<style id="cisb-anim">@keyframes chaty-animation-pulse{0%{transform:scale(1)}100%{transform:scale(1.1)}}.chaty-animation-pulse-icon,.chaty-animation-pulse,.elementor-video-icon:after{will-change:transform}</style>' . "\n";
+}, 99 );
 
 // Slow down the WordPress heartbeat (reduces server load).
 add_filter( 'heartbeat_settings', function ( $s ) {
