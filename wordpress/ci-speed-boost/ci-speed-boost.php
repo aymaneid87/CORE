@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: CI Speed Boost
- * Description: تسريع موقع ci-eg.com على الموبايل — تأجيل ملفات JS، تخفيف خطوط Google، وإلغاء سكربتات غير ضرورية. للإيقاف: عطّل الإضافة. للمقارنة: افتح أي صفحة وأضف ?nospeed=1
- * Version: 1.1.0
+ * Description: تسريع موقع ci-eg.com على الموبايل — تخفيف خطوط Google، وإلغاء سكربتات غير ضرورية. للإيقاف: عطّل الإضافة. للمقارنة: افتح أي صفحة وأضف ?nospeed=1
+ * Version: 1.2.0
  * Requires at least: 6.4
  */
 
@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 define( 'CISB_CACHE_DIR', WP_CONTENT_DIR . '/cache/ci-speed-boost' );
 define( 'CISB_CACHE_TTL', 6 * HOUR_IN_SECONDS );
+define( 'CISB_VERSION', '1.2.0' ); // part of the cache key, so updating this file starts a fresh cache
 
 function cisb_cache_file() {
 	$ua     = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
@@ -25,7 +26,7 @@ function cisb_cache_file() {
 	$https  = ( ! empty( $_SERVER['HTTPS'] ) && 'off' !== $_SERVER['HTTPS'] ) || ( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && 'https' === $_SERVER['HTTP_X_FORWARDED_PROTO'] ) ? 's' : 'h';
 	$host   = isset( $_SERVER['HTTP_HOST'] ) ? strtolower( $_SERVER['HTTP_HOST'] ) : '';
 	$path   = strtok( $_SERVER['REQUEST_URI'], '?' );
-	return CISB_CACHE_DIR . '/' . md5( $https . $host . $path ) . '-' . $device . '.html';
+	return CISB_CACHE_DIR . '/' . md5( CISB_VERSION . $https . $host . $path ) . '-' . $device . '.html';
 }
 
 function cisb_cacheable_request() {
@@ -113,30 +114,6 @@ function cisb_enabled() {
 	}
 	return true;
 }
-
-/*
- * 1) Defer JavaScript using WordPress' own loading strategy API.
- *    WordPress automatically keeps a script blocking when something depends on it
- *    in a way that would break, so this is the safe way to defer.
- */
-add_action( 'wp_print_scripts', function () {
-	if ( ! cisb_enabled() ) {
-		return;
-	}
-	$keep_blocking = array( 'jquery', 'jquery-core', 'jquery-migrate' );
-	foreach ( wp_scripts()->registered as $handle => $script ) {
-		if ( in_array( $handle, $keep_blocking, true ) ) {
-			continue;
-		}
-		// Slider Revolution prints its own inline init code in the page body.
-		if ( is_string( $script->src ) && ( false !== strpos( $script->src, '/revslider/' ) || false !== strpos( $handle, 'revslider' ) || 0 === strpos( $handle, 'sr7' ) || 'tp-tools' === $handle ) ) {
-			continue;
-		}
-		if ( empty( $script->extra['strategy'] ) ) {
-			wp_script_add_data( $handle, 'strategy', 'defer' );
-		}
-	}
-}, 1 );
 
 /*
  * 2) Google Fonts: drop italic variants and keep only weights 400–700.
