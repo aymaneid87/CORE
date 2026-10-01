@@ -16,6 +16,9 @@
   Symbol = white open "C" > ring "O" > black disc with lowercase "re" (C-O-re nested),
   circular text "INNOVATION BEGINS AT THE CORE", gold wordmark CORE + tagline
   "Innovation Begins at the Core" under it.
+- Light version (user-supplied, 1080x1080 canvas, cropped): `brand/current/logo-light.png`.
+  Gold C, black ring, gold "re", black circular text and black tagline, gold CORE.
+  Logo fills only ~13% of the 1080 canvas.
 - Favicon: `brand/current/favicon-270.png`, a different mark (nested square C/r/E maze),
   black at 50% opacity.
 - Colors (Elementor kit): primary gold `#DAA14C`, secondary/accent charcoal `#30373E`,
@@ -26,7 +29,8 @@
 - Full review page: `brand/logo-review.html`
   (published: https://claude.ai/artifact/KogoR1dSSuetxM94pJxoSP).
 - Main weaknesses: tagline written twice; circular text unreadable and upside-down at
-  bottom; two unrelated symbols (circle vs square favicon); white symbol vanishes on light
+  bottom; two unrelated symbols (circle vs square favicon); colors swap between dark and light
+  versions (no fixed-color element); header PNG has a white symbol that vanishes on light
   backgrounds; "re" in a different style than CORE; no Arabic version (needed for Riyadh);
   raster PNG only; "Innovation" lost from the wordmark.
 - Directions proposed:
