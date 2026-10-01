@@ -1,0 +1,477 @@
+<title>هوية CORE Innovation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Alexandria:wght@400;600;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+/* Layout: brand book; one wide column of chapters, each a heading + a grid of mock surfaces painted in fixed brand colors */
+:root{
+  --bg:#F3F1ED; --surface:#FFFFFF; --ink:#202020; --soft:#5E5F60; --line:#E1DDD5; --accent:#96661F; --no:#B4483F;
+  /* brand swatches, fixed in both themes */
+  --gold:#DAA14C; --gold-dk:#96661F; --char:#30373E; --night:#202020; --stone:#EEEBE5; --white:#FFFFFF; --grey:#535353;
+  --f-ar-head:'Alexandria','IBM Plex Sans Arabic',system-ui,sans-serif;
+  --f-ar:'IBM Plex Sans Arabic',system-ui,sans-serif;
+  --f-en:'Poppins',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#161718; --surface:#1F2123; --ink:#ECEAE6; --soft:#A7A8A9; --line:#323436; --accent:#DAA14C; --no:#E38B7F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#161718; --surface:#1F2123; --ink:#ECEAE6; --soft:#A7A8A9; --line:#323436; --accent:#DAA14C; --no:#E38B7F; color-scheme:dark}
+
+body{background:var(--bg);color:var(--ink);font-family:var(--f-ar);font-size:16px;line-height:1.8;padding:0 16px}
+.wrap{max-width:1120px;margin:0 auto;padding-block:28px 80px;display:flex;flex-direction:column;gap:72px}
+h1,h2,h3{font-family:var(--f-ar-head);margin:0;line-height:1.35;text-wrap:balance}
+h2{font-size:clamp(24px,3.4vw,32px);font-weight:800}
+h3{font-size:17px;font-weight:600}
+p{margin:0;max-width:70ch}
+.muted{color:var(--soft)}
+.en{font-family:var(--f-en);direction:ltr;unicode-bidi:isolate}
+.num{font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate;display:inline-block}
+section{display:flex;flex-direction:column;gap:22px}
+.chap{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.chap .n{font-family:var(--f-en);font-weight:600;font-size:14px;color:var(--accent);letter-spacing:.08em}
+.cap{font-size:13px;color:var(--soft);line-height:1.6}
+figure{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+
+/* ---------- logo assets (each image embedded once) ---------- */
+.L,.S{display:block;background-position:center;background-size:contain;background-repeat:no-repeat}
+.L{aspect-ratio:822/399}
+.S{aspect-ratio:336/399}
+.L.dark{background-image:url("logo-dark.png")}
+.L.light{background-image:url("logo-light.png");mix-blend-mode:multiply}
+.S.dark{background-image:url("symbol-dark.png")}
+.S.light{background-image:url("symbol-light.png");mix-blend-mode:multiply}
+.L.mono{-webkit-mask:url("logo-dark.png") center/contain no-repeat;mask:url("logo-dark.png") center/contain no-repeat;background-color:currentColor}
+.S.mono{-webkit-mask:url("symbol-dark.png") center/contain no-repeat;mask:url("symbol-dark.png") center/contain no-repeat;background-color:currentColor}
+
+/* ---------- surfaces ---------- */
+.sf{border-radius:10px;position:relative;overflow:hidden;container-type:inline-size;min-width:0}
+.on-night{background:var(--night);color:var(--white)}
+.on-char{background:var(--char);color:var(--white)}
+.on-white{background:var(--white);color:var(--night);box-shadow:0 0 0 1px var(--line)}
+.on-stone{background:var(--stone);color:var(--night)}
+.on-gold{background:var(--gold);color:var(--night)}
+.pad{padding:8cqw}
+.center{display:flex;align-items:center;justify-content:center}
+.tagline{font-family:var(--f-en);font-weight:500;letter-spacing:.02em}
+.ghostC{position:absolute;pointer-events:none}
+
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:16px}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:14px}
+
+/* cover */
+.cover{background:var(--night);color:var(--white);border-radius:14px;overflow:hidden;position:relative;padding:clamp(28px,6vw,64px);display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;min-height:420px}
+.cover .L{width:min(100%,460px)}
+.cover .meta{display:flex;flex-direction:column;gap:14px;position:relative;z-index:1}
+.cover h1{font-size:clamp(30px,5vw,48px);font-weight:800;color:var(--white)}
+.cover .meta p{color:#BDBDBD}
+.cover .kicker{font-family:var(--f-en);font-size:13px;letter-spacing:.3em;color:var(--gold);direction:ltr;text-align:right}
+@media (max-width:760px){.cover{grid-template-columns:1fr}}
+
+/* essence */
+.values{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.values div{background:var(--surface);padding:18px;display:flex;flex-direction:column;gap:4px}
+.values b{font-family:var(--f-ar-head);font-weight:600}
+.values .en{font-size:12px;color:var(--accent);letter-spacing:.06em}
+.voice{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.voice > div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.say{font-size:15px}
+.say.yes::before{content:"نعم  ";color:#3E7A55;font-weight:600}
+.say.no::before{content:"لا  ";color:var(--no);font-weight:600}
+
+/* logo versions */
+.lv{aspect-ratio:16/10}
+.lv .L{width:62%}
+.lv .S{height:56%}
+.space{aspect-ratio:16/10;background:var(--white);box-shadow:0 0 0 1px var(--line)}
+.space .box{position:relative;width:60%;outline:1.5px dashed var(--gold-dk);outline-offset:0;padding:5cqw}
+.space .box .L{width:100%}
+.space .x{position:absolute;font-family:var(--f-en);font-size:11px;color:var(--gold-dk)}
+.mins{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;justify-content:center}
+.mins figure{align-items:center;font-size:12px;color:var(--night)}
+
+/* misuse */
+.bad .sf{aspect-ratio:16/10}
+.bad figcaption{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.6}
+.bad figcaption::before{content:"✕";color:var(--no);font-weight:700;flex:none}
+
+/* color */
+.sw{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:14px}
+.sw figure{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;gap:0}
+.sw .chip{aspect-ratio:16/10;display:flex;align-items:flex-end;padding:12px;font-family:var(--f-en);font-weight:600;font-size:13px}
+.sw figcaption{padding:12px 14px;font-size:13px;line-height:1.7}
+.sw figcaption b{font-family:var(--f-ar-head);font-weight:600;font-size:15px;display:block}
+.sw dl{display:grid;grid-template-columns:auto 1fr;gap:0 10px;margin:6px 0 0;font-family:var(--f-en);font-size:12px;direction:ltr}
+.sw dt{color:var(--soft)} .sw dd{margin:0}
+.ratio{display:flex;height:46px;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px var(--line);direction:ltr}
+.ratio span{display:flex;align-items:center;justify-content:center;font-family:var(--f-en);font-size:12px;font-weight:600}
+
+/* type */
+.type{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
+.type .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.type .big{font-size:64px;line-height:1;color:var(--accent)}
+.type .row{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:8px;align-items:baseline;flex-wrap:wrap}
+.type .row small{font-family:var(--f-en);font-size:11px;color:var(--soft)}
+
+/* graphic elements */
+.ge .sf{aspect-ratio:4/3}
+.photo{background:linear-gradient(135deg,#6B5A48 0%,#A88B6A 40%,#D8C3A3 70%,#8C7660 100%)}
+.photo.marble{background:radial-gradient(120% 90% at 20% 10%,#F4F1EC 0%,#DCD6CC 55%,#B9B1A5 100%)}
+.photo.wood{background:repeating-linear-gradient(100deg,#6E4F33 0 6px,#7C5A3B 6px 14px,#694A2F 14px 19px,#86633F 19px 30px)}
+.photo.night{background:linear-gradient(160deg,#3A3530 0%,#1E1C1A 60%,#141312 100%)}
+.ph-label{position:absolute;bottom:3cqw;inset-inline-start:4cqw;font-size:max(10px,3cqw);color:rgba(255,255,255,.75);font-family:var(--f-ar)}
+
+/* stationery */
+.stat{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:18px;align-items:start}
+@media (max-width:900px){.stat{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.stat{grid-template-columns:1fr}}
+.bc{aspect-ratio:85/55;border-radius:6px}
+.bc .L{width:62%}
+.bc.back{padding:7cqw;display:flex;flex-direction:column;justify-content:space-between;direction:ltr;font-family:var(--f-en)}
+.bc .name{font-size:5.4cqw;font-weight:600;line-height:1.2}
+.bc .role{font-size:3.6cqw;color:var(--gold-dk);font-weight:500}
+.bc .lines{font-size:3.4cqw;line-height:1.7;color:var(--grey)}
+.a4{aspect-ratio:210/297;border-radius:4px;padding:8cqw 8cqw 6cqw;display:flex;flex-direction:column;direction:ltr;font-family:var(--f-en)}
+.a4 .head{display:flex;justify-content:space-between;align-items:center;border-bottom:.4cqw solid var(--gold);padding-bottom:4cqw}
+.a4 .head .L{width:34%}
+.a4 .head small{font-size:2.4cqw;color:var(--grey);text-align:right;line-height:1.5}
+.a4 .body{flex:1;padding-top:7cqw;font-size:2.6cqw;line-height:1.75;color:#3c3c3c;display:flex;flex-direction:column;gap:3cqw}
+.a4 .body b{color:var(--night);font-size:3.2cqw}
+.a4 .foot{display:flex;justify-content:space-between;font-size:2.2cqw;color:var(--grey);border-top:.25cqw solid var(--line);padding-top:3cqw}
+.env{aspect-ratio:220/110;border-radius:4px;padding:6cqw;direction:ltr;font-family:var(--f-en)}
+.env .L{width:26%}
+.env .to{position:absolute;right:12cqw;bottom:12cqw;font-size:2.3cqw;line-height:1.7;color:var(--grey)}
+.env .band{position:absolute;left:0;right:0;bottom:0;height:3.2cqw;background:var(--gold)}
+.qcover{aspect-ratio:210/297;border-radius:4px;padding:9cqw;display:flex;flex-direction:column;justify-content:space-between;direction:ltr;font-family:var(--f-en)}
+.qcover .L{width:56%;position:relative}
+.qcover .t{position:relative;display:flex;flex-direction:column;gap:2cqw}
+.qcover .t .k{font-size:3cqw;letter-spacing:.3em;color:var(--gold)}
+.qcover .t h4{margin:0;font-size:8cqw;font-weight:600;line-height:1.1;color:var(--white)}
+.qcover .t .ar{font-family:var(--f-ar-head);font-size:5cqw;color:var(--gold);direction:rtl;text-align:left}
+.qcover .t small{font-size:2.8cqw;color:#A9A9A9}
+
+/* digital */
+.dig{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px;align-items:start}
+.post{aspect-ratio:1}
+.post .bar{position:absolute;left:0;right:0;bottom:0;background:var(--night);padding:5cqw 6cqw;display:flex;align-items:center;justify-content:space-between;gap:4cqw;direction:ltr;font-family:var(--f-en);color:var(--white)}
+.post .bar .S{height:12cqw}
+.post .bar b{font-size:5cqw;font-weight:600;display:block;line-height:1.2}
+.post .bar small{font-size:3.4cqw;color:var(--gold)}
+.post .quote{position:absolute;inset:0;padding:10cqw;display:flex;flex-direction:column;justify-content:space-between;direction:ltr;font-family:var(--f-en)}
+.post .quote h4{margin:0;font-size:10cqw;line-height:1.1;font-weight:600}
+.post .quote .S{height:14cqw}
+.post .stat{position:absolute;inset:0;padding:10cqw;display:flex;flex-direction:column;justify-content:space-between}
+.post .stat .bign{font-family:var(--f-en);font-weight:700;font-size:34cqw;line-height:.9;direction:ltr;text-align:right}
+.post .stat .ar{font-family:var(--f-ar-head);font-weight:800;font-size:9cqw;line-height:1.3}
+.post .stat .L{width:42%}
+.story{aspect-ratio:9/16;max-width:100%}
+.story .in{position:absolute;inset:0;padding:10cqw;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center}
+.story .in .L{width:78%}
+.story .in h4{margin:0;font-family:var(--f-ar-head);font-weight:800;font-size:13cqw;line-height:1.25}
+.story .in .en{font-size:4.4cqw;color:var(--gold);letter-spacing:.12em}
+.story .in .pill{font-family:var(--f-ar-head);font-size:5cqw;background:var(--gold);color:var(--night);padding:2cqw 6cqw;border-radius:99px}
+.li{aspect-ratio:4/1}
+.li .L{position:absolute;width:26%;left:6cqw;top:50%;transform:translateY(-50%)}
+.li .tag{position:absolute;right:6cqw;top:50%;transform:translateY(-50%);font-family:var(--f-en);font-size:2.6cqw;color:var(--gold);text-align:right;line-height:1.4;direction:ltr}
+.li .tag small{display:block;color:#A9A9A9;font-size:1.7cqw;letter-spacing:.2em;margin-top:1cqw}
+.sig{background:var(--white);box-shadow:0 0 0 1px var(--line);border-radius:10px;padding:18px 20px;display:flex;gap:16px;align-items:center;direction:ltr;font-family:var(--f-en);color:var(--night)}
+.sig .S{height:58px;flex:none}
+.sig .div{width:2px;align-self:stretch;background:var(--gold)}
+.sig b{font-size:15px;font-weight:600;display:block}
+.sig .r{font-size:12px;color:var(--gold-dk);font-weight:500}
+.sig .c{font-size:12px;color:var(--grey);line-height:1.6;margin-top:4px}
+.web{border-radius:10px;overflow:hidden}
+.web nav{background:var(--night);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 20px;direction:ltr;flex-wrap:wrap}
+.web nav .L{width:130px}
+.web nav ul{display:flex;gap:18px;margin:0;padding:0;list-style:none;font-family:var(--f-en);font-size:13px;color:#cfcfcf;flex-wrap:wrap}
+.web nav .cta{font-family:var(--f-en);font-size:12px;font-weight:600;background:var(--gold);color:var(--night);padding:6px 14px;border-radius:99px}
+.web .hero{aspect-ratio:21/7;min-height:170px;display:flex;align-items:flex-end;padding:24px;direction:ltr}
+.web .hero h4{margin:0;font-family:var(--f-en);font-weight:600;font-size:8cqw;color:var(--white);line-height:1.15;position:relative}
+.web .hero h4 span{color:var(--gold)}
+
+/* environment */
+.env-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px}
+.hoard{aspect-ratio:3/1;display:grid;grid-template-columns:1.4fr 1fr}
+.hoard .l{background:var(--night);padding:5cqw;display:flex;flex-direction:column;justify-content:space-between}
+.hoard .l .L{width:62%}
+.hoard .l .ar{font-family:var(--f-ar-head);font-weight:800;font-size:4.2cqw;color:var(--white);line-height:1.3}
+.hoard .l .en{font-size:2.2cqw;color:var(--gold);letter-spacing:.18em}
+.hoard .l .ph{font-family:var(--f-en);font-size:2.2cqw;color:#BDBDBD;direction:ltr;text-align:right}
+.hoard .r{background:var(--gold);position:relative;overflow:hidden}
+.van{aspect-ratio:2.3/1;background:linear-gradient(#E9E6E0,#D9D4CB)}
+.van svg{position:absolute;inset:0;width:100%;height:100%}
+.van .L{position:absolute;width:30%;left:24%;top:27%}
+.van .web-t{position:absolute;left:62%;top:64.5%;font-family:var(--f-en);font-size:2.3cqw;color:var(--night);font-weight:600;letter-spacing:.1em}
+.wall{aspect-ratio:16/10;background:linear-gradient(180deg,#CFC8BC,#BEB6A9);display:flex;align-items:center;justify-content:center}
+.wall .panel{width:70%;background:var(--night);border-radius:2px;padding:6cqw 5cqw;display:flex;flex-direction:column;align-items:center;gap:3cqw;box-shadow:0 2cqw 4cqw rgba(0,0,0,.35)}
+.wall .panel .L{width:80%}
+.wall .panel .ar{font-family:var(--f-ar-head);font-weight:800;font-size:5.4cqw;color:var(--white);line-height:1.2}
+.tagbox{aspect-ratio:16/10;background:linear-gradient(135deg,#7C5A3B,#5E4129);display:flex;align-items:center;justify-content:center}
+.htag{width:34%;aspect-ratio:1/1.7;background:var(--gold);border-radius:3cqw 3cqw 1.5cqw 1.5cqw;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3cqw;color:var(--night);box-shadow:0 1.5cqw 3cqw rgba(0,0,0,.35);transform:rotate(-6deg)}
+.htag::before{content:"";position:absolute;top:5cqw;width:3.6cqw;height:3.6cqw;border-radius:50%;background:#6a4b31}
+.htag .S{height:34%}
+.htag small{font-family:var(--f-en);font-size:2.6cqw;font-weight:600;letter-spacing:.12em;text-align:center;line-height:1.5}
+
+.next{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.next ul{margin:0;padding-inline-start:20px}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="pt-gold" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M46.7 20 A18 18 0 1 0 46.7 44" fill="none" stroke="#DAA14C" stroke-opacity=".28" stroke-width="3"/>
+      <circle cx="32" cy="32" r="3" fill="#DAA14C" fill-opacity=".45"/>
+    </pattern>
+    <pattern id="pt-ink" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M46.7 20 A18 18 0 1 0 46.7 44" fill="none" stroke="#202020" stroke-opacity=".12" stroke-width="3"/>
+      <circle cx="32" cy="32" r="3" fill="#DAA14C"/>
+    </pattern>
+  </defs>
+  <!-- the open C taken from the logo's own geometry, used as a crop/frame device -->
+  <symbol id="bigC" viewBox="0 0 200 200"><path d="M161.3 48.6 A80 80 0 1 0 161.3 151.4" fill="none" stroke="currentColor" stroke-width="26"/></symbol>
+  <symbol id="bigC-line" viewBox="0 0 200 200"><path d="M161.3 48.6 A80 80 0 1 0 161.3 151.4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M146 61.4 A60 60 0 1 0 146 138.6" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+</svg>
+
+<main class="wrap" dir="rtl" lang="ar">
+
+  <!-- COVER -->
+  <div class="cover">
+    <svg class="ghostC" style="color:#DAA14C;opacity:.10;width:620px;height:620px;left:-200px;top:-110px" aria-hidden="true"><use href="#bigC-line"/></svg>
+    <div class="L dark" role="img" aria-label="لوجو CORE"></div>
+    <div class="meta">
+      <span class="kicker">BRAND IDENTITY · PROPOSAL</span>
+      <h1>الهوية البصرية لـ Core Innovation</h1>
+      <p>مقترح هوية كاملة مبني على اللوجو الحالي زي ما هو، من غير أي تعديل. اللوجو ثابت، وكل اللي حواليه (ألوان، خطوط، عناصر، تطبيقات) متصمم عشان يخدمه.</p>
+    </div>
+  </div>
+
+  <!-- 01 ESSENCE -->
+  <section>
+    <div class="chap"><span class="n">01</span><h2>جوهر البراند</h2></div>
+    <p class="muted">من كلام الشركة نفسها على الموقع: شركة تصميم وتنفيذ متكامل (Design &amp; Build) للتصميم الداخلي والتشطيب والأثاث والإنشاءات. اتأسست في القاهرة <span class="num">2017</span>، وفرع الرياض اتفتح <span class="num">2024</span>، ونفّذت أكتر من <span class="num">60</span> مشروع.</p>
+    <div class="sf on-night pad" style="padding:clamp(24px,5vw,48px)">
+      <svg class="ghostC" style="color:#DAA14C;opacity:.16;width:360px;height:360px;right:-120px;top:-60px" aria-hidden="true"><use href="#bigC"/></svg>
+      <div class="en" style="font-size:clamp(26px,4.6vw,46px);font-weight:600;line-height:1.15;position:relative">Innovation begins <span style="color:var(--gold)">at the core.</span></div>
+      <p style="color:#BDBDBD;margin-top:12px;position:relative">الفكرة اللي بتمسك الهوية كلها: الإبداع بيبدأ من القلب. وده موجود جوه اللوجو نفسه، C جواها O جواهم «re». فكل عنصر في الهوية بيشتغل بنفس المنطق: دواير بتقفل على مركز، والمركز دايمًا ذهبي.</p>
+    </div>
+    <div class="values">
+      <div><span class="en">INNOVATION</span><b>الابتكار</b><span class="cap">حلول تصميم مختلفة لكل مشروع.</span></div>
+      <div><span class="en">QUALITY</span><b>الجودة</b><span class="cap">صنعة وخامات على أعلى مستوى.</span></div>
+      <div><span class="en">INTEGRITY</span><b>النزاهة</b><span class="cap">شفافية ووضوح في كل مرحلة.</span></div>
+      <div><span class="en">CLIENT-CENTRIC</span><b>العميل أولًا</b><span class="cap">رؤية العميل هي نقطة البداية.</span></div>
+      <div><span class="en">SUSTAINABILITY</span><b>الاستدامة</b><span class="cap">ممارسات وخامات صديقة للبيئة.</span></div>
+    </div>
+    <div class="voice">
+      <div><h3>الشخصية</h3><p class="muted">واثقة، دقيقة، دافية. زي مهندس شاطر بيشرح لعميله بهدوء: كلام قليل، أرقام واضحة، ونتيجة تتشاف.</p></div>
+      <div><h3>نبرة الكلام</h3>
+        <span class="say yes">«سلّمنا الفيلا في 14 أسبوع، من أول اسكتش لآخر قطعة ديكور.»</span>
+        <span class="say no">«أفضل شركة تشطيبات في مصر والوطن العربي!!»</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 LOGO -->
+  <section>
+    <div class="chap"><span class="n">02</span><h2>اللوجو ونسخه</h2></div>
+    <p class="muted">نفس اللوجو بالظبط في كل النسخ. الفرق بس في اختيار النسخة المناسبة للخلفية.</p>
+    <div class="g3">
+      <figure><div class="sf on-night lv center"><div class="L dark" role="img" aria-label="النسخة الغامقة"></div></div><figcaption class="cap"><b>النسخة الغامقة (الأساسية).</b> على الأسود والفحمي والصور الغامقة.</figcaption></figure>
+      <figure><div class="sf on-white lv center"><div class="L light" role="img" aria-label="النسخة الفاتحة"></div></div><figcaption class="cap"><b>النسخة الفاتحة.</b> على الأبيض والحجري والورق.</figcaption></figure>
+      <figure><div class="sf on-gold lv center"><div class="L mono" role="img" aria-label="نسخة لون واحد سودا"></div></div><figcaption class="cap"><b>لون واحد أسود.</b> على الذهبي، والختم، والفاكس، والحفر.</figcaption></figure>
+      <figure><div class="sf on-char lv center" style="color:#fff"><div class="L mono" role="img" aria-label="نسخة لون واحد بيضا"></div></div><figcaption class="cap"><b>لون واحد أبيض.</b> على الصور الزحمة، والزجاج المصنفر، والقص بالليزر.</figcaption></figure>
+      <figure><div class="sf on-night lv center"><div class="S dark" role="img" aria-label="الرمز لوحده، نسخة غامقة"></div></div><figcaption class="cap"><b>الرمز لوحده.</b> صورة البروفايل، والختم، والأماكن المربعة.</figcaption></figure>
+      <figure><div class="sf on-white lv center"><div class="S light" role="img" aria-label="الرمز لوحده، نسخة فاتحة"></div></div><figcaption class="cap"><b>الرمز لوحده (فاتح).</b> المطبوعات والأختام على الورق الأبيض.</figcaption></figure>
+    </div>
+    <div class="g2">
+      <figure>
+        <div class="sf space center">
+          <div class="box"><div class="L light" role="img" aria-label="المساحة الآمنة حوالين اللوجو"></div>
+            <span class="x" style="top:-18px;left:50%;transform:translateX(-50%)">x</span>
+            <span class="x" style="bottom:-18px;left:50%;transform:translateX(-50%)">x</span>
+            <span class="x" style="left:-14px;top:50%;transform:translateY(-50%)">x</span>
+            <span class="x" style="right:-14px;top:50%;transform:translateY(-50%)">x</span>
+          </div>
+        </div>
+        <figcaption class="cap"><b>المساحة الآمنة.</b> x تساوي قطر الدايرة الداخلية اللي فيها «re». مفيش نص ولا صورة ولا حافة تدخل جوه المساحة دي.</figcaption>
+      </figure>
+      <figure>
+        <div class="sf on-white center" style="aspect-ratio:16/10">
+          <div class="mins">
+            <figure><div class="L light" style="width:140px"></div><span class="num">35 mm · 140 px</span></figure>
+            <figure><div class="S light" style="height:48px"></div><span class="num">12 mm · 32 px</span></figure>
+          </div>
+        </div>
+        <figcaption class="cap"><b>أقل مقاس.</b> اللوجو الكامل مش أصغر من <span class="num">35</span> مم في الطباعة و <span class="num">140</span> بكسل على الشاشة. أصغر من كده نستخدم الرمز لوحده.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 03 MISUSE -->
+  <section class="bad">
+    <div class="chap"><span class="n">03</span><h2>ممنوعات اللوجو</h2></div>
+    <p class="muted">بما إن اللوجو ثابت، الحفاظ عليه هو أهم قاعدة في الهوية.</p>
+    <div class="g4">
+      <figure><div class="sf on-white center"><div class="L dark" style="width:62%"></div></div><figcaption>النسخة الغامقة على خلفية فاتحة. الرمز الأبيض بيختفي.</figcaption></figure>
+      <figure><div class="sf on-night center"><div class="L dark" style="width:62%;transform:scaleX(1.35) scaleY(.8)"></div></div><figcaption>شد أو ضغط اللوجو في أي اتجاه.</figcaption></figure>
+      <figure><div class="sf on-night center"><div class="L dark" style="width:62%;filter:hue-rotate(160deg) saturate(1.4)"></div></div><figcaption>تغيير ألوانه أو إضافة تدرّج.</figcaption></figure>
+      <figure><div class="sf photo wood center"><div class="L light" style="width:62%;mix-blend-mode:normal;transform:rotate(-12deg)"></div></div><figcaption>تدويره أو حطه في مربع أبيض فوق صورة.</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 04 COLOR -->
+  <section>
+    <div class="chap"><span class="n">04</span><h2>الألوان</h2></div>
+    <p class="muted">نفس ألوان اللوجو والموقع. ضفنا لونين مساعدين بس: ذهبي غامق للنص الصغير على الأبيض، وحجري دافي للخلفيات الفاتحة.</p>
+    <div class="sw">
+      <figure><div class="chip" style="background:#DAA14C;color:#202020">Core Gold</div><figcaption><b>الذهبي</b>اللون المميّز. مساحات وعناوين كبيرة وعلى الغامق.<dl><dt>HEX</dt><dd>#DAA14C</dd><dt>RGB</dt><dd>218 161 76</dd><dt>CMYK</dt><dd>0 26 65 15</dd></dl></figcaption></figure>
+      <figure><div class="chip" style="background:#202020;color:#DAA14C">Night</div><figcaption><b>الليلي</b>الخلفية الأساسية. هيدر، يافطات، أغلفة.<dl><dt>HEX</dt><dd>#202020</dd><dt>RGB</dt><dd>32 32 32</dd><dt>CMYK</dt><dd>0 0 0 87</dd></dl></figcaption></figure>
+      <figure><div class="chip" style="background:#30373E;color:#fff">Charcoal</div><figcaption><b>الفحمي</b>خلفيات تانوية وأقسام في المطبوعات.<dl><dt>HEX</dt><dd>#30373E</dd><dt>RGB</dt><dd>48 55 62</dd><dt>CMYK</dt><dd>23 11 0 76</dd></dl></figcaption></figure>
+      <figure><div class="chip" style="background:#EEEBE5;color:#202020;box-shadow:inset 0 -1px 0 #e1ddd5">Stone</div><figcaption><b>الحجري (مساعد)</b>خلفية فاتحة دافية بدل الأبيض الصريح.<dl><dt>HEX</dt><dd>#EEEBE5</dd><dt>RGB</dt><dd>238 235 229</dd><dt>CMYK</dt><dd>0 1 4 7</dd></dl></figcaption></figure>
+      <figure><div class="chip" style="background:#96661F;color:#fff">Deep Gold</div><figcaption><b>الذهبي الغامق (مساعد)</b>للنص الصغير على الأبيض، تباين <span class="num">5:1</span>.<dl><dt>HEX</dt><dd>#96661F</dd><dt>RGB</dt><dd>150 102 31</dd><dt>CMYK</dt><dd>0 32 79 41</dd></dl></figcaption></figure>
+    </div>
+    <figure>
+      <div class="ratio"><span style="flex:50;background:#202020;color:#DAA14C">Night 50%</span><span style="flex:25;background:#EEEBE5;color:#202020">Stone / White 25%</span><span style="flex:15;background:#30373E;color:#fff">Charcoal 15%</span><span style="flex:10;background:#DAA14C;color:#202020">Gold 10%</span></div>
+      <figcaption class="cap">نسب الاستخدام. الذهبي لمسة بتلفت النظر، مش خلفية لكل حاجة. قيم CMYK تقريبية، وتتأكد بعينة مطبوعة قبل الطباعة الكبيرة.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 05 TYPE -->
+  <section>
+    <div class="chap"><span class="n">05</span><h2>الخطوط</h2></div>
+    <div class="type">
+      <div class="card">
+        <span class="cap">الإنجليزي · نفس خط الموقع</span>
+        <div class="big en" style="font-weight:600">Poppins</div>
+        <div class="row en"><span style="font-weight:600;font-size:22px">Fit-out that feels finished.</span><small>SemiBold 600 · Headlines</small></div>
+        <div class="row en"><span style="font-weight:500;font-size:16px">Concept · Execution · Final Touches</span><small>Medium 500 · Labels</small></div>
+        <div class="row en"><span style="font-weight:400;font-size:14px">We guide clients from the first sketch to the final decorative touch.</span><small>Regular 400 · Body</small></div>
+      </div>
+      <div class="card">
+        <span class="cap">العربي · عناوين ونصوص</span>
+        <div class="big" style="font-family:'Alexandria';font-weight:800">ألكسندريا</div>
+        <div class="row"><span style="font-family:'Alexandria';font-weight:800;font-size:22px">تشطيب يليق بيك</span><small>Alexandria 800 · عناوين</small></div>
+        <div class="row"><span style="font-family:'Alexandria';font-weight:600;font-size:16px">تصميم · تنفيذ · لمسات أخيرة</span><small>Alexandria 600 · عناوين فرعية</small></div>
+        <div class="row"><span style="font-family:'IBM Plex Sans Arabic';font-size:15px">بنرافق العميل من أول اسكتش لحد آخر قطعة ديكور.</span><small>IBM Plex Sans Arabic 400 · نصوص</small></div>
+      </div>
+    </div>
+    <p class="cap">الخطين مجانيين على Google Fonts، والاتنين هندسيين وبيتماشوا مع حروف CORE التقيلة.</p>
+  </section>
+
+  <!-- 06 GRAPHIC ELEMENTS -->
+  <section class="ge">
+    <div class="chap"><span class="n">06</span><h2>العناصر الجرافيكية</h2></div>
+    <p class="muted">كل العناصر طالعة من شكل الـ C المفتوح اللي في اللوجو، من غير ما نلمس اللوجو نفسه.</p>
+    <div class="g3">
+      <figure><div class="sf on-night"><svg class="ghostC" style="color:#DAA14C;width:120%;height:120%;right:-48%;top:-10%" aria-hidden="true"><use href="#bigC"/></svg></div><figcaption class="cap"><b>القوس الكبير.</b> C ذهبي مقصوص عند حافة التصميم. بيستخدم في الأغلفة والبوستات.</figcaption></figure>
+      <figure><div class="sf on-night"><svg width="100%" height="100%" style="position:absolute;inset:0" aria-hidden="true"><rect width="100%" height="100%" fill="url(#pt-gold)"/></svg></div><figcaption class="cap"><b>الباترن.</b> C صغيرة ونقطة. خلفيات، ورق تغليف، ظهر الكروت.</figcaption></figure>
+      <figure><div class="sf photo marble"><svg class="ghostC" style="color:#fff;width:90%;height:90%;left:5%;top:5%;opacity:.9" aria-hidden="true"><use href="#bigC-line"/></svg><span class="ph-label" style="color:#5E5F60">مكان صورة مشروع</span></div><figcaption class="cap"><b>الإطار الخطي.</b> قوسين رفيعين فوق صورة مشروع، يوجّهوا العين لتفصيلة.</figcaption></figure>
+    </div>
+    <div class="g4">
+      <figure><div class="sf photo wood" style="aspect-ratio:4/5"><span class="ph-label">خشب طبيعي</span></div></figure>
+      <figure><div class="sf photo marble" style="aspect-ratio:4/5"><span class="ph-label" style="color:#5E5F60">رخام وحجر</span></div></figure>
+      <figure><div class="sf photo" style="aspect-ratio:4/5"><span class="ph-label">إضاءة دافية</span></div></figure>
+      <figure><div class="sf photo night" style="aspect-ratio:4/5"><span class="ph-label">تفاصيل وتشطيب</span></div></figure>
+    </div>
+    <p class="cap"><b>اتجاه التصوير:</b> صور المشاريع بعد التسليم بإضاءة دافية، ولقطات قريبة لتفاصيل الخامات (فواصل الخشب، حواف الرخام، تقفيل النحاس). الألوان الدافية في الصور بتكمّل الذهبي من غير ما تنافسه. المربعات فوق مكان صور حقيقية.</p>
+  </section>
+
+  <!-- 07 PRINT -->
+  <section>
+    <div class="chap"><span class="n">07</span><h2>المطبوعات</h2></div>
+    <div class="stat">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <figure><div class="sf on-night bc center"><svg class="ghostC" style="color:#DAA14C;opacity:.22;width:70%;height:110%;right:-30%;top:-5%" aria-hidden="true"><use href="#bigC-line"/></svg><div class="L dark" role="img" aria-label="وش الكارت"></div></div><figcaption class="cap">الكارت، الوش</figcaption></figure>
+        <figure><div class="sf on-white bc back">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="name">Name Surname</div><div class="role">Senior Interior Designer</div></div><div class="S light" style="height:15cqw"></div></div>
+          <div class="lines">+20 109 766 7788<br>+20 112 223 7123<br><span style="color:var(--gold-dk);font-weight:600">ci-eg.com</span> · Cairo · Riyadh</div>
+          <div style="position:absolute;left:0;bottom:0;width:30%;height:1.6cqw;background:var(--gold)"></div>
+        </div><figcaption class="cap">الكارت، الضهر. الاسم والوظيفة مثال.</figcaption></figure>
+        <figure><div class="sf on-white env"><div class="L light"></div><div class="to">Mr. Client Name<br>Villa 12, Fifth Settlement<br>New Cairo, Egypt</div><div class="band"></div></div><figcaption class="cap">الظرف DL. بيانات المرسل إليه مثال.</figcaption></figure>
+      </div>
+      <figure><div class="sf on-white a4">
+        <div class="head"><div class="L light"></div><small>Design &amp; Build<br>Cairo · Riyadh<br>ci-eg.com</small></div>
+        <div class="body">
+          <span>Date: 01 October 2026</span>
+          <b>Subject: Fit-out proposal, residential villa</b>
+          <span>Dear Client,</span>
+          <span>Thank you for the opportunity to present our proposal. Our scope covers concept design, execution and final decorative touches, delivered by one team from the first sketch to handover.</span>
+          <span>Please find the detailed bill of quantities and timeline attached.</span>
+          <span>Kind regards,<br>Core Innovation</span>
+        </div>
+        <svg class="ghostC" style="color:#EEEBE5;width:60%;height:45%;right:-22%;bottom:4%" aria-hidden="true"><use href="#bigC"/></svg>
+        <div class="foot" style="position:relative"><span>+20 109 766 7788</span><span>ci-eg.com</span></div>
+      </div><figcaption class="cap">ورق الخطابات A4. نص الخطاب مثال.</figcaption></figure>
+      <figure><div class="sf on-night qcover">
+        <svg class="ghostC" style="color:#DAA14C;width:150%;height:110%;right:-78%;top:22%;opacity:.95" aria-hidden="true"><use href="#bigC"/></svg>
+        <svg class="ghostC" style="color:#DAA14C;width:100%;height:100%;left:0;top:0;opacity:.6" aria-hidden="true"><rect width="100%" height="100%" fill="url(#pt-gold)" opacity=".5"/></svg>
+        <div class="L dark"></div>
+        <div class="t"><span class="k">QUOTATION</span><h4>Villa Fit-out<br>New Cairo</h4><span class="ar">عرض سعر</span><small>Ref. CI-2026-041 · October 2026</small></div>
+      </div><figcaption class="cap">غلاف عرض السعر والبروفايل. اسم المشروع والرقم مثال.</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 08 DIGITAL -->
+  <section>
+    <div class="chap"><span class="n">08</span><h2>الديجيتال والسوشيال</h2></div>
+    <div class="dig">
+      <figure><div class="sf post photo"><span class="ph-label" style="top:4cqw;bottom:auto">مكان صورة المشروع</span>
+        <div class="bar"><div><b>Villa · New Cairo</b><small>Interior design &amp; fit-out</small></div><div class="S dark"></div></div>
+      </div><figcaption class="cap">بوست مشروع: صورة كاملة وشريط ثابت تحت.</figcaption></figure>
+      <figure><div class="sf post on-night">
+        <svg width="100%" height="100%" style="position:absolute;inset:0" aria-hidden="true"><rect width="100%" height="100%" fill="url(#pt-gold)"/></svg>
+        <div class="quote"><h4>Innovation begins <span style="color:var(--gold)">at the core.</span></h4><div class="S dark"></div></div>
+      </div><figcaption class="cap">بوست رسالة: جملة واحدة على الباترن.</figcaption></figure>
+      <figure><div class="sf post on-gold">
+        <svg class="ghostC" style="color:#202020;opacity:.08;width:110%;height:110%;left:-40%;top:-5%" aria-hidden="true"><use href="#bigC"/></svg>
+        <div class="stat"><div class="L mono" style="color:#202020"></div><div><div class="bign">60+</div><div class="ar">مشروع اتسلّم من <span class="num">2017</span></div></div></div>
+      </div><figcaption class="cap">بوست رقم: الذهبي كخلفية في البوستات دي بس.</figcaption></figure>
+      <figure><div class="sf story on-night" style="max-width:300px">
+        <svg class="ghostC" style="color:#DAA14C;width:160%;height:90%;right:-100%;top:30%" aria-hidden="true"><use href="#bigC"/></svg>
+        <div class="in"><div class="L dark"></div><div style="position:relative;display:flex;flex-direction:column;gap:3cqw;align-items:center"><span class="en">NOW IN RIYADH</span><h4 style="color:#fff">فرعنا في<br>الرياض</h4></div><span class="pill">تواصل معنا</span></div>
+      </div><figcaption class="cap">ستوري إعلان.</figcaption></figure>
+    </div>
+    <figure><div class="sf li on-night">
+      <svg width="100%" height="100%" style="position:absolute;inset:0" aria-hidden="true"><rect width="100%" height="100%" fill="url(#pt-gold)" opacity=".7"/></svg>
+      <div class="L dark"></div>
+      <div class="tag">Design · Fit-out · Furniture · Construction<small>CAIRO · RIYADH</small></div>
+    </div><figcaption class="cap">غلاف لينكدإن وفيسبوك.</figcaption></figure>
+    <div class="g2">
+      <figure><div class="sig"><div class="S light"></div><div class="div"></div><div><b>Name Surname</b><span class="r">Project Manager · Core Innovation</span><div class="c">+20 109 766 7788 · ci-eg.com<br>Cairo · Riyadh</div></div></div><figcaption class="cap">توقيع الإيميل. الاسم مثال.</figcaption></figure>
+      <figure><div class="web">
+        <nav><div class="L dark"></div><ul><li>About</li><li>Services</li><li>Projects</li></ul><span class="cta">Contact us</span></nav>
+        <div class="hero photo night sf" style="border-radius:0"><svg class="ghostC" style="color:#DAA14C;opacity:.5;width:50%;height:160%;right:-14%;top:-30%" aria-hidden="true"><use href="#bigC-line"/></svg><h4>Spaces built<br><span>from the core.</span></h4></div>
+      </div><figcaption class="cap">هيدر الموقع.</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 09 ENVIRONMENT -->
+  <section>
+    <div class="chap"><span class="n">09</span><h2>المواقع والمكتب</h2></div>
+    <div class="env-g">
+      <figure><div class="sf hoard">
+        <div class="l"><div class="L dark"></div><div><div class="ar">مشروع قيد التنفيذ</div><div class="en">WORK IN PROGRESS</div></div><div class="ph"><span class="en">+20 109 766 7788 · ci-eg.com</span></div></div>
+        <div class="r"><svg class="ghostC" style="color:#202020;width:170%;height:170%;left:-20%;top:-35%" aria-hidden="true"><use href="#bigC"/></svg></div>
+      </div><figcaption class="cap">بانر سور الموقع. أهم إعلان لشركة تنفيذ: كل مشروع شغال بيعرّف بيكم.</figcaption></figure>
+      <figure><div class="sf van">
+        <svg viewBox="0 0 460 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <path d="M40 150 V62 Q40 46 56 46 H318 Q334 46 344 58 L392 106 Q404 112 408 124 V150 Z" fill="#FFFFFF" stroke="#C9C3B8"/>
+          <path d="M330 60 L374 104 H330 Z" fill="#2B2F33"/>
+          <rect x="40" y="128" width="368" height="14" fill="#DAA14C"/>
+          <circle cx="110" cy="152" r="22" fill="#202020"/><circle cx="110" cy="152" r="9" fill="#8A8A8A"/>
+          <circle cx="340" cy="152" r="22" fill="#202020"/><circle cx="340" cy="152" r="9" fill="#8A8A8A"/>
+        </svg>
+        <div class="L light"></div><div class="web-t">ci-eg.com</div>
+      </div><figcaption class="cap">عربية الموقع.</figcaption></figure>
+      <figure><div class="sf wall"><div class="panel"><div class="L dark"></div><div class="ar">كور إنوفيشن</div></div></div><figcaption class="cap">يافطة مكتب الرياض: اللوجو كما هو، والاسم العربي تحته كسطر منفصل.</figcaption></figure>
+      <figure><div class="sf tagbox"><div class="htag"><div class="S mono"></div><small>CRAFTED BY<br>CORE</small></div></div><figcaption class="cap">تاج الأثاث اللي بيتصنع في الورشة.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="next">
+    <h3>اللي بعد كده</h3>
+    <ul>
+      <li>لو الهوية دي عجبتك، أطلّعلك ملفات جاهزة للطباعة: الكارت، ورق الخطابات، الظرف، غلاف عرض السعر، وقوالب السوشيال.</li>
+      <li>اللوجو هنا ملفات PNG من الموقع. للطباعة الكبيرة (البانرات واليافطات) محتاجين اللوجو الأصلي AI أو PDF أو SVG لو موجود عندك.</li>
+      <li>وقت ما تحب، نرجع لمقترحات تعديل اللوجو ونطبّقها على نفس الهوية.</li>
+    </ul>
+  </section>
+</main>

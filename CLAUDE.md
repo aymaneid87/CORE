@@ -41,3 +41,19 @@
   - Plus Arabic lockup "كور إنوفيشن" in Alexandria.
 - Next step waiting on the user: pick a direction, then deliver final SVGs
   (horizontal, symbol only, Arabic, one-color) + favicon sizes for WordPress.
+
+## Brand identity proposal with the CURRENT logo, unchanged (2026-10-01)
+- User asked first to see a full identity using the logo as-is (no logo edits).
+- Page: `brand/identity/identity.html` (published: https://claude.ai/artifact/Vt2FMyMGQcHkLRorE4fFJx).
+  Logo crops in `brand/identity/` (logo-dark, logo-light, symbol-dark, symbol-light PNGs).
+- System: colors Gold #DAA14C, Night #202020, Charcoal #30373E + supporting Stone #EEEBE5
+  and Deep Gold #96661F; ratio Night 50 / Stone-White 25 / Charcoal 15 / Gold 10.
+  Type: Poppins (EN, matches site), Alexandria (AR headings), IBM Plex Sans Arabic (AR body).
+  Graphic device: the open "C" arc from the logo (big cropped arc, thin double-arc frame,
+  C+dot pattern). Clear space x = diameter of the inner "re" disc; min size 35mm/140px,
+  symbol alone 12mm/32px. One-color black/white versions made with CSS masks.
+- Applications shown: business card, letterhead, DL envelope, quotation cover, IG posts
+  (project / quote / 60+ stat), story (Riyadh branch), LinkedIn cover, email signature,
+  website header, site hoarding, van, Riyadh office sign (Arabic name as a separate line
+  under the logo), furniture hang tag.
+- Next: if approved, produce print-ready files; need the original vector logo (AI/PDF/SVG).
