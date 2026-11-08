@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>CORE IPTV</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="stage">
+  <video id="vid" autoplay></video>
+  <section id="s-login" class="screen"></section>
+  <section id="s-home" class="screen"></section>
+  <section id="s-live" class="screen"></section>
+  <section id="s-vod" class="screen"></section>
+  <section id="s-detail" class="screen"></section>
+  <section id="s-fav" class="screen"></section>
+  <section id="s-search" class="screen"></section>
+  <section id="s-settings" class="screen"></section>
+
+  <div id="player">
+    <div class="pl-top"><div class="tt" id="plTitle"></div><div class="ts" id="plSub"></div></div>
+    <div class="pl-bot" id="plBot"></div>
+    <div id="plist"><h3 id="plistT">القنوات</h3><div id="plistL"></div></div>
+    <div id="pmsg"></div>
+    <div id="spin"></div>
+  </div>
+
+  <div id="busy"><div class="sp2"></div><div id="busyMsg">جارٍ التحميل…</div></div>
+  <div id="toast"></div>
+</div>
+<script src="js/hls.min.js"></script>
+<script src="js/store.js"></script>
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+<script src="js/screens.js"></script>
+<script src="js/browse.js"></script>
+<script src="js/player.js"></script>
+<script>App.boot();</script>
+</body>
+</html>

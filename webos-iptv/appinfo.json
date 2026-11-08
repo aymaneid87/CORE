@@ -1,0 +1,14 @@
+{
+  "id": "com.core.iptv",
+  "version": "1.0.0",
+  "vendor": "CORE",
+  "type": "web",
+  "main": "index.html",
+  "title": "CORE IPTV",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "bgImage": "splash.png",
+  "resolution": "1920x1080",
+  "disallowScrollingInFirstScreen": true,
+  "requiredACG": []
+}
