@@ -1,0 +1,131 @@
+@font-face{font-family:"TjL";font-weight:400;src:url(../fonts/tajawal-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF}
+@font-face{font-family:"TjL";font-weight:700;src:url(../fonts/tajawal-latin-700-normal.woff2) format("woff2");unicode-range:U+0000-00FF}
+@font-face{font-family:"Tj";font-weight:400;src:url(../fonts/tajawal-arabic-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Tj";font-weight:700;src:url(../fonts/tajawal-arabic-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Quran";src:url(../fonts/amiri-quran-arabic-400-normal.woff2) format("woff2")}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#06201f;color:#f4efe0;font-family:"TjL","Tj",sans-serif;cursor:default}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;
+  -webkit-transform-origin:0 0;transform-origin:0 0;
+  background:#0a3532;
+  background-image:
+   -webkit-radial-gradient(ellipse at 20% 0%,rgba(224,184,92,.16),rgba(224,184,92,0) 55%),
+   -webkit-radial-gradient(ellipse at 90% 100%,rgba(30,120,110,.55),rgba(30,120,110,0) 60%),
+   -webkit-linear-gradient(135deg,rgba(255,255,255,.03) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.03) 50%,rgba(255,255,255,.03) 75%,transparent 75%);
+  background-size:auto,auto,60px 60px}
+.screen{position:absolute;left:0;top:0;width:1920px;height:1080px;padding:50px 70px;display:none}
+.screen.on{display:block}
+
+.f{outline:none;-webkit-transition:-webkit-transform .12s, background .12s, box-shadow .12s;transition:transform .12s, background .12s, box-shadow .12s}
+.f.focus{-webkit-transform:scale(1.04);transform:scale(1.04);box-shadow:0 0 0 5px #e8c15d,0 0 40px rgba(232,193,93,.55);z-index:5}
+.list .f.focus{-webkit-transform:none;transform:none}
+
+/* header */
+.header{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;height:170px}
+.hdr-right{-webkit-flex:1;flex:1}
+.hdr-left{-webkit-flex:1;flex:1;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:flex-start;justify-content:flex-start}
+.hdr-center{text-align:center;width:620px}
+.hijri{font-size:46px;font-weight:700;color:#e8c15d}
+.greg{font-size:30px;opacity:.85;margin-top:8px}
+.clock{font-size:128px;font-weight:700;line-height:1;direction:ltr;letter-spacing:2px}
+.clock-sec{font-size:26px;opacity:.7;margin-top:2px}
+.w-ico{font-size:84px;margin-left:24px;line-height:1}
+.w-temp{font-size:68px;font-weight:700;direction:ltr;text-align:right;line-height:1}
+.w-desc{font-size:30px;margin-top:6px}
+.w-meta{font-size:22px;opacity:.7;margin-top:4px}
+
+/* hero */
+.hero{margin:18px 0 22px;padding:26px 44px;border-radius:30px;background:rgba(0,0,0,.28);border:2px solid rgba(232,193,93,.35);
+  display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;height:190px}
+.hero-label{font-size:32px;opacity:.85;width:420px}
+.hero-label span{display:block;color:#e8c15d;font-size:26px;margin-top:6px}
+.hero-main{-webkit-flex:1;flex:1;text-align:center}
+.hero-name{font-size:96px;font-weight:700;color:#e8c15d;margin-left:40px}
+.hero-time{font-size:96px;font-weight:700;direction:ltr;display:inline-block}
+.hero-count{font-size:34px;width:430px;text-align:left}
+.hero-count span{display:block;font-size:64px;font-weight:700;direction:ltr;text-align:left;margin-top:4px}
+
+/* prayers */
+.prayers{display:-webkit-flex;display:flex;height:200px}
+.pcard{-webkit-flex:1;flex:1;margin-left:18px;border-radius:26px;background:rgba(255,255,255,.07);text-align:center;padding-top:30px;border:2px solid transparent}
+.pcard:last-child{margin-left:0}
+.pcard .pn{font-size:38px;font-weight:700}
+.pcard .pt{font-size:62px;margin-top:14px;direction:ltr;font-weight:700}
+.pcard .ps{font-size:22px;opacity:.7;margin-top:6px}
+.pcard.past{opacity:.5}
+.pcard.next{background:#e8c15d;color:#0a3532;border-color:#fff}
+.pcard.sun .pn{font-size:34px}
+
+/* tiles */
+.tiles{display:-webkit-flex;display:flex;margin-top:30px;height:290px}
+.tile{-webkit-flex:1;flex:1;margin-left:28px;border-radius:30px;background:rgba(255,255,255,.1);text-align:center;padding-top:54px}
+.tile:last-child{margin-left:0}
+.t-ico{font-size:84px;line-height:1}
+.t-name{font-size:48px;font-weight:700;margin-top:14px}
+.t-sub{font-size:24px;opacity:.75;margin-top:8px}
+
+/* generic title */
+.q-title{font-size:56px;font-weight:700;color:#e8c15d;height:90px}
+.q-hint{font-size:24px;color:#f4efe0;opacity:.6;font-weight:400;margin-right:30px}
+
+/* quran */
+.q-body{display:-webkit-flex;display:flex;height:700px}
+.q-col{margin-left:24px;background:rgba(0,0,0,.25);border-radius:24px;padding:22px 20px;overflow:hidden}
+.q-col:last-child{margin-left:0}
+.q-reciters{width:420px}.q-surahs{width:430px}.q-reader{-webkit-flex:1;flex:1}
+.q-col-title{font-size:32px;color:#e8c15d;margin-bottom:14px;font-weight:700}
+.list{height:600px;overflow:hidden;position:relative}
+.item{height:62px;line-height:62px;font-size:32px;padding:0 20px;border-radius:14px;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(255,255,255,.05)}
+.item.sel{background:rgba(232,193,93,.25);color:#ffe9a8}
+.item.focus{background:#e8c15d;color:#0a3532}
+.item .no{display:inline-block;width:62px;color:#e8c15d;direction:ltr;text-align:right;margin-left:14px}
+.item.focus .no{color:#0a3532}
+.reader{height:610px;overflow:hidden;border-radius:16px;padding:14px 26px;position:relative;font-family:"Quran","Tj",serif;font-size:50px;line-height:2.15;text-align:justify;background:rgba(0,0,0,.18)}
+.reader-in{position:relative}
+.reader-empty{font-family:"Tj",sans-serif;font-size:34px;opacity:.6;text-align:center;margin-top:200px;line-height:1.5}
+.bsm{text-align:center;color:#e8c15d;font-size:56px}
+.aya{padding:0 2px;border-radius:10px}
+.aya.cur{background:rgba(232,193,93,.28)}
+.anum{color:#e8c15d;font-size:.75em}
+.reader.focus{-webkit-transform:none;transform:none}
+
+/* player */
+.player{position:absolute;left:70px;right:70px;bottom:36px;height:150px;border-radius:26px;background:rgba(0,0,0,.45);border:2px solid rgba(232,193,93,.35);display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;padding:0 34px}
+.p-info{width:420px}
+.p-title{font-size:40px;font-weight:700;color:#e8c15d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-sub{font-size:24px;opacity:.7;margin-top:6px}
+.p-bar{-webkit-flex:1;flex:1;height:12px;border-radius:6px;background:rgba(255,255,255,.18);margin:0 30px;overflow:hidden;direction:ltr}
+.p-fill{height:100%;width:0;background:#e8c15d}
+.p-time{font-size:28px;width:190px;direction:ltr;text-align:center}
+.p-btns{display:-webkit-flex;display:flex;direction:ltr}
+.pbtn{min-width:88px;height:88px;line-height:88px;border-radius:44px;background:rgba(255,255,255,.12);text-align:center;font-size:36px;margin-left:14px;padding:0 18px}
+.pbtn.big{min-width:112px;height:112px;line-height:112px;border-radius:56px;font-size:48px;background:#e8c15d;color:#0a3532}
+.pbtn.on{background:#2e9a7a}
+
+/* settings */
+.s-list{height:900px;overflow:hidden;position:relative}
+.s-row{height:84px;line-height:84px;padding:0 36px;border-radius:18px;background:rgba(255,255,255,.07);font-size:36px;margin-bottom:10px;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between}
+.s-row .v{color:#e8c15d;font-weight:700}
+.s-row.focus{background:#e8c15d;color:#0a3532}
+.s-row.focus .v{color:#0a3532}
+.s-row .v:before{content:"\25B6  ";opacity:.5}
+.s-row .v:after{content:"  \25C0";opacity:.5}
+.s-row.act .v:before,.s-row.act .v:after{content:""}
+
+/* apps */
+.app-grid{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap}
+.app{width:410px;height:230px;margin:0 0 30px 30px;border-radius:28px;background:rgba(255,255,255,.1);text-align:center;padding-top:44px;font-size:42px;font-weight:700}
+.app .ai{font-size:76px;display:block;line-height:1;margin-bottom:12px}
+
+/* adhan overlay */
+.overlay{position:absolute;left:0;top:0;width:1920px;height:1080px;background:rgba(2,18,17,.94);display:none;z-index:50;text-align:center}
+.overlay.on{display:block}
+.ad-box{margin-top:170px}
+.ad-ico{font-size:200px}
+.ad-title{font-size:96px;font-weight:700;color:#e8c15d;margin-top:20px}
+.ad-sub{font-size:52px;margin-top:20px;opacity:.85;font-family:"Quran","Tj",serif}
+.ad-btn{display:inline-block;margin-top:80px;padding:0 90px;height:120px;line-height:120px;font-size:48px;border-radius:60px;background:#e8c15d;color:#0a3532;font-weight:700}
+
+#toast{position:absolute;bottom:60px;left:50%;margin-left:-380px;width:760px;text-align:center;padding:22px 30px;font-size:34px;background:rgba(0,0,0,.85);border:2px solid #e8c15d;border-radius:20px;display:none;z-index:99}
+.s-row.focus,.item.focus{-webkit-transform:none;transform:none;box-shadow:inset 0 0 0 5px #fff}

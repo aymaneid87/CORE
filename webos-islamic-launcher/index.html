@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>المنصة الإسلامية</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="stage">
+
+  <!-- ============ الرئيسية ============ -->
+  <section id="home" class="screen">
+    <div class="header">
+      <div class="hdr-right">
+        <div id="hijri" class="hijri"></div>
+        <div id="greg" class="greg"></div>
+      </div>
+      <div class="hdr-center">
+        <div id="clock" class="clock">--:--</div>
+        <div id="clockSec" class="clock-sec"></div>
+      </div>
+      <div class="hdr-left" id="weatherBox">
+        <div class="w-ico" id="wIcon">☁</div>
+        <div class="w-info">
+          <div class="w-temp" id="wTemp">--°</div>
+          <div class="w-desc" id="wDesc">الطقس غير متاح</div>
+          <div class="w-meta" id="wMeta"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-label">الصلاة القادمة <span id="cityName"></span></div>
+      <div class="hero-main">
+        <span id="nextName" class="hero-name">--</span>
+        <span id="nextTime" class="hero-time">--:--</span>
+      </div>
+      <div class="hero-count">متبقٍ <span id="nextCount">--:--:--</span></div>
+    </div>
+
+    <div class="prayers" id="prayerRow"></div>
+
+    <div class="tiles">
+      <div class="tile f" id="tileQuran" data-go="quran"><div class="t-ico">📖</div><div class="t-name">المصحف الشريف</div><div class="t-sub" id="nowPlaying">استماع وقراءة</div></div>
+      <div class="tile f" data-go="apps"><div class="t-ico">📺</div><div class="t-name">التطبيقات</div><div class="t-sub">يوتيوب · نتفليكس · القنوات</div></div>
+      <div class="tile f" data-go="settings"><div class="t-ico">⚙</div><div class="t-name">الإعدادات</div><div class="t-sub">المدينة · الأذان · طريقة الحساب</div></div>
+    </div>
+  </section>
+
+  <!-- ============ المصحف ============ -->
+  <section id="quran" class="screen">
+    <div class="q-title">المصحف الشريف <span class="q-hint">▲▼ تنقّل · OK اختيار · ◀▶ تقديم/تأخير · Back رجوع</span></div>
+    <div class="q-body">
+      <div class="q-col q-reciters">
+        <div class="q-col-title">القارئ</div>
+        <div class="list" id="reciterList"></div>
+      </div>
+      <div class="q-col q-surahs">
+        <div class="q-col-title">السور</div>
+        <div class="list" id="surahList"></div>
+      </div>
+      <div class="q-col q-reader">
+        <div class="q-col-title" id="readerTitle">اختر سورة</div>
+        <div class="reader f" id="reader" tabindex="0"><div class="reader-empty">اختر سورة من القائمة للقراءة والاستماع</div></div>
+      </div>
+    </div>
+    <div class="player" id="player">
+      <div class="p-info"><div id="pTitle" class="p-title">—</div><div id="pSub" class="p-sub"></div></div>
+      <div class="p-bar"><div id="pFill" class="p-fill"></div></div>
+      <div class="p-time"><span id="pCur">0:00</span> / <span id="pDur">0:00</span></div>
+      <div class="p-btns">
+        <div class="pbtn f" id="bPrev">⏮</div>
+        <div class="pbtn f" id="bBack">⏪</div>
+        <div class="pbtn f big" id="bPlay">▶</div>
+        <div class="pbtn f" id="bFwd">⏩</div>
+        <div class="pbtn f" id="bNext">⏭</div>
+        <div class="pbtn f" id="bFollow" title="تتبع الآيات">تتبّع</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ الإعدادات ============ -->
+  <section id="settings" class="screen">
+    <div class="q-title">الإعدادات <span class="q-hint">◀▶ لتغيير القيمة · Back رجوع</span></div>
+    <div class="s-list" id="settingsList"></div>
+  </section>
+
+  <!-- ============ التطبيقات ============ -->
+  <section id="apps" class="screen">
+    <div class="q-title">تطبيقات التلفاز <span class="q-hint">OK للفتح · Back رجوع</span></div>
+    <div class="app-grid" id="appGrid"></div>
+  </section>
+
+  <!-- ============ شاشة الأذان ============ -->
+  <div id="adhan" class="overlay">
+    <div class="ad-box">
+      <div class="ad-ico">🕌</div>
+      <div class="ad-title" id="adTitle">حان الآن موعد الأذان</div>
+      <div class="ad-sub">الله أكبر الله أكبر</div>
+      <div class="ad-btn f" id="adStop">إيقاف الأذان</div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+</div>
+
+<script src="data/quran.js"></script>
+<script src="data/reciters.js"></script>
+<script src="js/cities.js"></script>
+<script src="js/prayer.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

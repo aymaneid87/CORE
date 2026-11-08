@@ -1,0 +1,14 @@
+{
+  "id": "com.islamic.launcher",
+  "version": "1.0.0",
+  "vendor": "Islamic TV",
+  "type": "web",
+  "main": "index.html",
+  "title": "المنصة الإسلامية",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "bgImage": "splash.png",
+  "resolution": "1920x1080",
+  "disallowScrollingInFirstScreen": true,
+  "requiredPermissions": ["time.query"]
+}
