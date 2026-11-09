@@ -71,63 +71,6 @@
     }
   };
 
-  /* ================= الرئيسية ================= */
-  var TILES = [
-    { go: "live", ic: "live", n: "البث المباشر", c: "كل القنوات", big: 1 }, { go: "vod", ic: "vod", n: "الأفلام", c: "VOD" },
-    { go: "series", ic: "series", n: "المسلسلات", c: "الحلقات والمواسم" }, { go: "fav", ic: "fav", n: "المفضلة", c: "قنوات وأفلام" },
-    { go: "search", ic: "search", n: "البحث", c: "ابحث في كل شيء" }, { go: "settings", ic: "settings", n: "الإعدادات", c: "الحساب والبث" }
-  ];
-  var Home = {
-    id: "s-home", row: 0, idx: 0,
-    enter: function () { this.render(); },
-    render: function () {
-      var acc = Store.active(), info = Api.info || {}, chip = "", h;
-      if (info.exp) { var dd = Math.ceil((info.exp * 1000 - Date.now()) / 864e5); chip = dd > 0 ? "ينتهي بعد " + UI.toAr(dd) + " يوم" : "الاشتراك منتهي"; }
-      else if (info.m3u) chip = "قائمة M3U";
-      h = UI.top(UI.logo() + (acc ? '<span class="sub">' + esc(acc.name) + (info.max ? " · اتصالات " + UI.toAr(info.act || 0) + " من " + UI.toAr(info.max) : "") + '</span>' : ""), chip);
-      var m3u = Api.mode === "m3u";
-      h += '<div class="tiles">';
-      TILES.forEach(function (t, i) {
-        var dis = m3u && (t.go === "vod" || t.go === "series");
-        h += '<div class="tile' + (t.big ? " big" : "") + '" id="t_' + i + '" style="' + (dis ? "opacity:.35" : "") + '"><div class="ti">' + UI.icon(t.ic) + '</div><div class="tn">' + t.n + '</div><div class="tc">' + (dis ? "غير متاح في M3U" : t.c) + '</div></div>';
-      });
-      h += '</div>';
-      var rec = Store.recents().slice(0, 6);
-      this.rec = rec;
-      if (rec.length) {
-        h += '<div class="sec-t">تابع المشاهدة</div><div class="recents">';
-        rec.forEach(function (r, i) {
-          var tag = r.t === "live" ? "مباشر" : r.t === "vod" ? "فيلم" : "حلقة";
-          h += '<div class="rc" id="r_' + i + '"><div class="rimg" style="' + UI.cssUrl(r.icon) + '"></div><span class="rt">' + tag + '</span><div class="rn">' + esc(r.name) + '</div></div>';
-        });
-        h += '</div>';
-      }
-      h += '<div class="hint"><b>الأحمر</b> الرئيسية · <b>الأخضر</b> بث مباشر · <b>الأصفر</b> أفلام · <b>الأزرق</b> بحث</div>';
-      $(this.id).innerHTML = h; UI.tickClock(); this.focus();
-    },
-    focus: function () {
-      var all = document.querySelectorAll("#s-home .foc"), i;
-      for (i = 0; i < all.length; i++) all[i].className = all[i].className.replace(" foc", "");
-      var e = $((this.row === 0 ? "t_" : "r_") + this.idx); if (e) e.className += " foc";
-    },
-    key: function (k) {
-      var n = this.row === 0 ? TILES.length : this.rec.length;
-      if (k === 37) { this.idx = Math.min(n - 1, this.idx + 1); this.focus(); return true; }
-      if (k === 39) { this.idx = Math.max(0, this.idx - 1); this.focus(); return true; }
-      if (k === 40 && this.row === 0 && this.rec.length) { this.row = 1; this.idx = Math.min(this.idx, this.rec.length - 1); this.focus(); return true; }
-      if (k === 38 && this.row === 1) { this.row = 0; this.idx = Math.min(this.idx, TILES.length - 1); this.focus(); return true; }
-      if (k === 13) {
-        if (this.row === 0) {
-          var t = TILES[this.idx];
-          if (Api.mode === "m3u" && (t.go === "vod" || t.go === "series")) { UI.toast("هذا القسم غير متاح مع قوائم M3U"); return true; }
-          App.go(t.go, t.go === "vod" || t.go === "series" ? { type: t.go } : null);
-        } else App.playRecent(this.rec[this.idx]);
-        return true;
-      }
-      return false;
-    }
-  };
-
   /* ================= الإعدادات ================= */
   var Settings = {
     id: "s-settings", list: null,
@@ -176,5 +119,5 @@
   };
 
   g.Screens = g.Screens || {};
-  g.Screens.login = Login; g.Screens.home = Home; g.Screens.settings = Settings;
+  g.Screens.login = Login; g.Screens.settings = Settings;
 })(window);

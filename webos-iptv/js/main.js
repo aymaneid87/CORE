@@ -23,7 +23,7 @@
     var s = g.Screens[t.name]; s.name = t.name; s.params = t.params; this.cur = s;
     showEl(s, true); s.enter(null, true); return true;
   };
-  App.resetBrowse = function () { g.Screens.live.reset(); g.Screens.vod.reset(); g.Screens.search.full = {}; };
+  App.resetBrowse = function () { g.Screens.live.reset(); g.Screens.vod.reset(); g.Screens.home.reset(); g.Screens.search.full = {}; };
 
   /* ----- تشغيل ----- */
   App.playLive = function (ch, list, idx) { ch.t = "live"; App.lastLive = ch.id; g.Player.open({ kind: "live", list: list, idx: idx || 0 }); };

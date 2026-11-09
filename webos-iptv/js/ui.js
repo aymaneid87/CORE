@@ -18,6 +18,8 @@
     search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>',
     settings: '<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',
     play: '<path d="M7 4.5v15l12-7.5z"/>',
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
     clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/>'
   };
   function icon(n) { return '<svg class="ico" viewBox="0 0 24 24">' + P[n] + '</svg>'; }
